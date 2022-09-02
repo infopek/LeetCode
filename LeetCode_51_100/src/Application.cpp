@@ -115,11 +115,80 @@ std::vector<int> SpiralOrder(const std::vector<std::vector<int>>& matrix)
 {
 	const int rows = matrix.size();
 	const int cols = matrix[0].size();
+	std::vector<int> spiral(rows * cols);
 
+	// Four borders
+	int leftBorder = 0;
+	int rightBorder = cols - 1;
+	int bottomBorder = rows - 1;
+	int topBorder = 0;
 
+	int spiralIdx = 0;
+
+	// Travel clockwise
+	while (leftBorder <= rightBorder && bottomBorder >= topBorder)
+	{
+		// Travel right
+		for (int j = leftBorder; j <= rightBorder; j++)
+		{
+			spiral[spiralIdx] = matrix[leftBorder][j];
+			spiralIdx++;
+		}
+		topBorder++;
+
+		// Travel down
+		for (int i = topBorder; i <= bottomBorder; i++)
+		{
+			spiral[spiralIdx] = matrix[i][rightBorder];
+			spiralIdx++;
+		}
+		rightBorder--;
+
+		// Travel left
+		if (topBorder <= bottomBorder)
+		{
+			for (int j = rightBorder; j >= leftBorder; j--)
+			{
+				spiral[spiralIdx] = matrix[bottomBorder][j];
+				spiralIdx++;
+			}
+		}
+		bottomBorder--;
+
+		// Travel up
+		if (leftBorder <= rightBorder)
+		{
+			for (int i = bottomBorder; i >= topBorder; i--)
+			{
+				spiral[spiralIdx] = matrix[i][leftBorder];
+				spiralIdx++;
+			}
+		}
+		leftBorder++;
+	}
+
+	return spiral;
+}
+
+/* PROBLEM 55: JUMP GAME */
+bool CanJump(const std::vector<int>& nums)
+{
+	int size = nums.size();
+
+	int maxReach = nums[0];
+	int i = 0;
+	while (i <= std::min(maxReach, size - 1))
+	{
+		maxReach = std::max(maxReach, i + nums[i]);
+		if (maxReach >= size - 1)
+			return true;
+		i++;
+	}
+
+	return false;
 }
 
 int main()
 {
-
+	
 }
