@@ -219,7 +219,26 @@ bool CanJump(const std::vector<int>& nums)
 /* PROBLEM 56: MERGE INTERVALS */
 std::vector<std::vector<int>> Merge(std::vector<std::vector<int>>& intervals) 
 {
+	const int numIntervals = intervals.size();
+	std::sort(intervals.begin(), intervals.end());
 
+	std::vector<std::vector<int>> nonOverlapping;
+	for (int i = 0; i < numIntervals; i++)
+	{
+		int lower = intervals[i][0];
+		int upper = intervals[i][1];
+		int j = i + 1;
+		while (j < numIntervals && upper >= intervals[j][0])
+		{
+			upper = std::max(upper, intervals[j][1]);
+			j++;
+		}
+
+		i = j - 1;
+		nonOverlapping.push_back({ lower, upper });
+	}
+
+	return nonOverlapping;
 }
 
 int main()
