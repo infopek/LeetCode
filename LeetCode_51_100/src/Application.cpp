@@ -9,7 +9,35 @@
 #include <numeric>
 #include <algorithm>
 
-/* Singly-linked list node */
+/* Node definition. */
+class Node {
+public:
+	int val;
+	std::vector<Node*> children;
+
+	Node() {}
+	Node(int _val) 
+		: val(_val) {}
+	Node(int _val, std::vector<Node*> _children) 
+		: val(_val), children(_children) {}
+};
+
+/* Binary tree node definition. */
+struct TreeNode
+{
+	int val;
+	TreeNode* left;
+	TreeNode* right;
+
+	TreeNode()
+		: val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x)
+		: val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode* left, TreeNode* right)
+		: val(x), left(left), right(right) {}
+};
+
+/* Linked List definition. */
 struct ListNode
 {
 	int val;
@@ -186,6 +214,12 @@ bool CanJump(const std::vector<int>& nums)
 	}
 
 	return false;
+}
+
+/* PROBLEM 56: MERGE INTERVALS */
+std::vector<std::vector<int>> Merge(std::vector<std::vector<int>>& intervals) 
+{
+
 }
 
 int main()

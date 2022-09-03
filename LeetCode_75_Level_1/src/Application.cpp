@@ -1,7 +1,41 @@
 #include <iostream>
+#include <string>
 
 #include <vector>
 #include <unordered_map>
+#include <set>
+#include <stack>
+
+#include <numeric>
+#include <algorithm>
+
+/* Node definition */
+class Node {
+public:
+	int val;
+	std::vector<Node*> children;
+
+	Node() {}
+	Node(int _val)
+		: val(_val) {}
+	Node(int _val, std::vector<Node*> _children)
+		: val(_val), children(_children) {}
+};
+
+/* Binary tree node definition. */
+struct TreeNode
+{
+	int val;
+	TreeNode* left;
+	TreeNode* right;
+
+	TreeNode()
+		: val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x)
+		: val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode* left, TreeNode* right)
+		: val(x), left(left), right(right) {}
+};
 
 /* Linked list definition */
 struct ListNode
@@ -16,6 +50,8 @@ struct ListNode
 	ListNode(int x, ListNode* next)
 		: val(x), next(next) {}
 };
+
+// --------------------------------------------- //
 
 // -------------	DAY 1	------------- //
 
@@ -247,7 +283,7 @@ ListNode* DetectCycle(ListNode* head)
 
 }
 
-// -------------	DAY 4	------------- //
+// -------------	DAY 5	------------- //
 
 /* BEST TIME TO BUY AND SELL STOCK */
 int MaxProfit(const std::vector<int>& prices)
@@ -288,8 +324,111 @@ int LongestPalindrome(const std::string& str)
 	return (length > 0) ? result + 1 : result;
 }
 
+// -------------	DAY 6	------------- //
+
+void PreorderRec(Node* root, std::vector<int>& result)
+{
+	if (!root)
+		return;
+
+	result.push_back(root->val);
+
+	for (const auto& node : root->children)
+		PreorderRec(node, result);
+}
+
+/* N-ARY TREE PREORDER TRAVERSAL */
+std::vector<int> Preorder(Node* root)
+{
+	// Recursive
+	//std::vector<int> result;
+	//PreorderRec(root, result);
+	//return result;
+
+	// Iterative
+	std::vector<int> result;
+	if (!root)
+		return result;
+
+	std::stack<Node*> stack;
+	stack.push(root);
+	while (!stack.empty())
+	{
+		Node* top = stack.top();
+		stack.pop();
+		result.push_back(top->val);
+
+		int numNodes = top->children.size();
+		for (int i = numNodes - 1; i >= 0; i--)
+			stack.push(top->children[i]);
+	}
+
+	return result;
+}
+
+/* Calculates the height of a binary tree. */
+int TreeHeight(TreeNode* root)
+{
+	if (!root)
+		return 0;
+	else
+	{
+		int leftHeight = TreeHeight(root->left);
+		int rightHeight = TreeHeight(root->right);
+
+		if (leftHeight > rightHeight)
+			return leftHeight + 1;
+		else
+			return rightHeight + 1;
+	}
+}
+
+/* Traverses the tree in level order. */
+void LevelOrderRec(TreeNode* root, int level, std::vector<int>& temp)
+{
+	if (!root)
+		return;
+	if (level == 0)
+	{
+		temp.push_back(root->val);
+	}
+	else if (level > 0)
+	{
+		LevelOrderRec(root->left, level - 1, temp);
+		LevelOrderRec(root->right, level - 1, temp);
+	}
+}
+
+/* BINARY TREE LEVEL ORDER TRAVERSAL */
+std::vector<std::vector<int>> LevelOrder(TreeNode* root) 
+{
+	int height = TreeHeight(root);
+	std::vector<std::vector<int>> result(height);
+	for (int l = 0; l < height; l++)
+	{
+		std::vector<int> temp;
+		LevelOrderRec(root, l, temp);
+		result[l] = temp;
+	}
+
+	return result;
+}
+
 int main()
 {
-	std::string string = "abccccdd";
-	std::cout << LongestPalindrome(string);
+	TreeNode* root = new TreeNode(1);
+	root->left = new TreeNode(4);
+	root->left->left = new TreeNode(6);
+	root->left->right = new TreeNode(5);
+	root->left->left->left = new TreeNode(12);
+	root->left->right->left = new TreeNode(7);
+	root->left->right->right = new TreeNode(2);
+
+	root->right = new TreeNode(3);
+	root->right->left = new TreeNode(10);
+	root->right->right = new TreeNode(11);
+	root->right->right->left = new TreeNode(9);
+
+	std::vector<std::vector<int>> levels = LevelOrder(root);
+
 }

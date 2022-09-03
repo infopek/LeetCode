@@ -23,7 +23,7 @@ struct ListNode
 		: val(x), next(next) {}
 };
 
-/* Binary tree node */
+/* Binary tree node definition. */
 struct TreeNode
 {
 	int val;
