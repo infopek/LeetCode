@@ -120,7 +120,31 @@ std::vector<double> AverageOfLevels(TreeNode* root)
 	return averages;
 }
 
-/* 3 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* Recursively fills out the digits. */
+void DigitsRec(std::vector<int>& result, int length, int diff, int num, int digit)
+{
+	if (length == 0)
+	{
+		result.push_back(num);
+		return;
+	}
+	for (int d = 0; d <= 9; d++)
+	{
+		if (std::abs(d - digit) == diff)
+			DigitsRec(result, length - 1, diff, 10 * num + d, d);
+	}
+}
+
+/* 3 SEPT, 2022: NUMBERS WITH SAME CONSECUTIVE DIFFERENCES */
+std::vector<int> NumsSameConsecDiff(int length, int diff)
+{
+	std::vector<int> result;
+	for (int d = 1; d <= 9; d++)
+		DigitsRec(result, length - 1, diff, d, d);
+
+	return result;
+}
+
 
 /* 4 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
