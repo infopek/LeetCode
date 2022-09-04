@@ -414,20 +414,49 @@ std::vector<std::vector<int>> LevelOrder(TreeNode* root)
 	return result;
 }
 
+// -------------	DAY 7	------------- //
+
+/* BINARY SEARCH */
+int Search(const std::vector<int>& nums, const int target)
+{
+	const int size = nums.size();
+
+	int low = 0;
+	int high = size - 1;
+	while (low <= high)
+	{
+		int mid = low + (high - low) / 2;
+		if (nums[mid] == target)
+			return mid;
+		else if (nums[mid] < target)
+			low = mid + 1;
+		else
+			high = mid - 1;
+	}
+
+	return -1;
+}
+
+bool IsBadVersion(int version);
+
+/* FIRST BAD VERSION */
+int FirstBadVersion(const int n)
+{
+	int low = 1;
+	int high = n;
+	while (low < high)
+	{
+		int mid = low + (high - low) / 2;
+		if (IsBadVersion(mid))
+			high = mid;
+		else
+			low = mid + 1;
+	}
+	
+	return low;
+}
+
 int main()
 {
-	TreeNode* root = new TreeNode(1);
-	root->left = new TreeNode(4);
-	root->left->left = new TreeNode(6);
-	root->left->right = new TreeNode(5);
-	root->left->left->left = new TreeNode(12);
-	root->left->right->left = new TreeNode(7);
-	root->left->right->right = new TreeNode(2);
-
-	root->right = new TreeNode(3);
-	root->right->left = new TreeNode(10);
-	root->right->right = new TreeNode(11);
-	root->right->right->left = new TreeNode(9);
-
-	std::vector<std::vector<int>> levels = LevelOrder(root);
+	std::cout << FirstBadVersion(5);
 }
