@@ -241,6 +241,61 @@ std::vector<std::vector<int>> Merge(std::vector<std::vector<int>>& intervals)
 	return nonOverlapping;
 }
 
+/* Find the index where the interval will be inserted using binary search. */
+int FindInsertIndex(const std::vector<std::vector<int>>& intervals, const int numIntervals, const std::vector<int>& interval)
+{
+	int low = 0;
+	int high = numIntervals - 1;
+	int target = interval[0];
+	while (low <= high)
+	{
+		int mid = low + (high - low) / 2;
+		if (target == intervals[mid][0])
+			return (intervals[mid][1] <= interval[1]) ? mid + 1 : mid;
+		else if (target < intervals[mid][0])
+			high = mid - 1;
+		else
+			low = mid + 1;
+	}
+
+	return low;
+}
+
+/* Merges intervals that are already sorted. */
+std::vector<std::vector<int>> MergeSortedIntervals(const std::vector<std::vector<int>>& intervals, const int numIntervals)
+{
+	std::vector<std::vector<int>> nonOverlapping;
+	for (int i = 0; i < numIntervals; i++)
+	{
+		int lower = intervals[i][0];
+		int upper = intervals[i][1];
+		int j = i + 1;
+		while (j < numIntervals && upper >= intervals[j][0])
+		{
+			upper = std::max(upper, intervals[j][1]);
+			j++;
+		}
+
+		i = j - 1;
+		nonOverlapping.push_back({ lower, upper });
+	}
+
+	return nonOverlapping;
+}
+
+/* PROBLEM 57: INSERT INTERVAL */
+std::vector<std::vector<int>> Insert(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval) 
+{
+	int numIntervals = intervals.size();
+
+	int idx = FindInsertIndex(intervals, numIntervals, newInterval);
+	intervals.insert(intervals.begin() + idx, newInterval);
+
+	MergeSortedIntervals(intervals, numIntervals + 1);
+
+	return intervals;
+}
+
 int main()
 {
 	
