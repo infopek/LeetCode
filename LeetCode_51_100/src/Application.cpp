@@ -296,7 +296,84 @@ std::vector<std::vector<int>> Insert(std::vector<std::vector<int>>& intervals, s
 	return intervals;
 }
 
+/* PROBLEM 58: LENGTH OF LAST WORD */
+int LengthOfLastWord(const std::string& str)
+{
+	const int length = str.length();
+
+	int i = length - 1;
+	while (i >= 0 && str[i] == ' ')
+		i--;
+
+	int result = 0;
+	while (i >= 0 && str[i] != ' ')
+	{
+		result++;
+		i--;
+	}
+
+	return result;
+}
+
+/* PROBLEM 59: SPIRAL MATRIX II */
+std::vector<std::vector<int>> GenerateMatrix(const int n) 
+{
+	std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
+
+	// Four borders
+	int leftBorder = 0;
+	int rightBorder = n - 1;
+	int bottomBorder = n - 1;
+	int topBorder = 0;
+
+	int currNum = 1;
+
+	// Travel clockwise
+	while (leftBorder <= rightBorder && bottomBorder >= topBorder)
+	{
+		// Travel right
+		for (int j = leftBorder; j <= rightBorder; j++)
+		{
+			matrix[leftBorder][j] = currNum;
+			currNum++;
+		}
+		topBorder++;
+
+		// Travel down
+		for (int i = topBorder; i <= bottomBorder; i++)
+		{
+			matrix[i][rightBorder] = currNum;
+			currNum++;
+		}
+		rightBorder--;
+
+		// Travel left
+		if (topBorder <= bottomBorder)
+		{
+			for (int j = rightBorder; j >= leftBorder; j--)
+			{
+				matrix[bottomBorder][j] = currNum;
+				currNum++;
+			}
+		}
+		bottomBorder--;
+
+		// Travel up
+		if (leftBorder <= rightBorder)
+		{
+			for (int i = bottomBorder; i >= topBorder; i--)
+			{
+				matrix[i][leftBorder] = currNum;
+				currNum++;
+			}
+		}
+		leftBorder++;
+	}
+
+	return matrix;
+}
+
 int main()
 {
-	
+	std::vector<std::vector<int>> matrix = GenerateMatrix(3);
 }
