@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <unordered_map>
+#include <map>
+#include <set>
 #include <set>
 #include <stack>
 
@@ -145,8 +147,34 @@ std::vector<int> NumsSameConsecDiff(int length, int diff)
 	return result;
 }
 
+void VertTravelDFS(TreeNode* root, std::map<int, std::map<int, std::multiset<int>>>& nodes, int x, int y)
+{
+	if (root)
+	{
+		nodes[x][y].insert(root->val);
+		VertTravelDFS(root->left, nodes, x - 1, y + 1);
+		VertTravelDFS(root->right, nodes, x + 1, y + 1);
+	}
+}
 
-/* 4 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 4 SEPT, 2022: VERTICAL ORDER TRAVERSAL OF A BINARY TREE */
+std::vector<std::vector<int>> VerticalTraversal(TreeNode* root) 
+{
+	std::map<int, std::map<int, std::multiset<int>>> nodes;
+	VertTravelDFS(root, nodes, 0, 0);
+
+	std::vector<std::vector<int>> result;
+	for (const auto& map : nodes)
+	{
+		std::vector<int> currCol;
+		for (const auto mSet : map.second)
+			currCol.insert(currCol.end(), mSet.second.begin(), mSet.second.end());
+		
+		result.push_back(currCol);
+	}
+
+	return result;
+}
 
 /* 5 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -175,30 +203,6 @@ std::vector<int> NumsSameConsecDiff(int length, int diff)
 /* 17 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
 /* 18 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 19 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 20 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 21 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 22 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 23 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 24 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 25 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 26 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 27 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 28 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 29 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
-
-/* 30 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
 int main()
 {
