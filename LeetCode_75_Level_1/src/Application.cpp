@@ -456,6 +456,52 @@ int FirstBadVersion(const int n)
 	return low;
 }
 
+// -------------	DAY 8	------------- //
+
+/* VALIDATE BINARY SEARCH TREE */
+bool IsValidBST(TreeNode* root)
+{
+	std::stack<TreeNode*> stack;
+
+	long prev = LONG_MIN;
+	TreeNode* curr = root;
+	while (curr || !stack.empty())
+	{
+		while (curr)
+		{
+			stack.push(curr);
+			curr = curr->left;
+		}
+
+		curr = stack.top();
+		stack.pop();
+		if (curr->val <= prev)
+			return false;
+
+		prev = curr->val;
+		curr = curr->right;
+	}
+
+	return true;
+}
+
+/* LOWEST COMMON ANCESTOR OF A BINARY SEARCH TREE */
+TreeNode* LowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
+{
+	if (root)
+	{
+		int minVal = std::min(p->val, q->val);
+		int maxVal = std::max(p->val, q->val);
+		if (minVal < root->val && root->val < maxVal)
+			return root;
+		else if (root->val < minVal)
+			return LowestCommonAncestor(root->right, p, q);
+		else if (root->val > maxVal)
+			return LowestCommonAncestor(root->left, p, q);
+	}
+	return root;
+}
+
 int main()
 {
 
