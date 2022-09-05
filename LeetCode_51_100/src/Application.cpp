@@ -373,7 +373,98 @@ std::vector<std::vector<int>> GenerateMatrix(const int n)
 	return matrix;
 }
 
+void NextPermutation(std::string& str)
+{
+	const int length = str.size();
+
+	// Find pivot
+	int pivot = length - 1;
+	while (pivot > 0 && str[pivot - 1] >= str[pivot])
+		pivot--;
+
+	// Special case: loop back around
+	if (pivot == 0)
+	{
+		std::reverse(str.begin(), str.end());
+		return;
+	}
+	else
+		pivot--;
+
+	// Find first successor candidate
+	int succ = length - 1;
+	while (succ > pivot && str[succ] <= str[pivot])
+		succ--;
+
+	// Find closest greater integer to nums[pivot]
+	int curr = succ;
+	while (curr > pivot)
+	{
+		if (str[curr] > str[pivot] && str[curr] < str[succ])
+			succ = curr;
+
+		curr--;
+	}
+
+	// Swap pivot with its successor
+	std::swap(str[pivot], str[succ]);
+
+	// Reverse suffix (subarray after pivot)
+	std::reverse(str.begin() + (pivot + 1), str.end());
+}
+
+/* PROBLEM 60: PERMUTATION SEQUENCE */
+std::string GetPermutation(int n, int k)
+{
+	// Create string 
+	std::string result;
+	result.resize(n);
+	for (int i = 1; i <= n; i++)
+		result[i - 1] = i + '0';
+
+	// Get next permutation (k - 1) times
+	for (int i = 1; i < k; i++)
+		NextPermutation(result);
+
+	return result;
+}
+
+/* PROBLEM 61: ROTATE LIST */
+ListNode* RotateRight(ListNode* head, int k)
+{
+	// Special case
+	if (!head)	
+		return nullptr;
+
+	// Calculate length of list
+	ListNode* tail = head;
+	int length = 1;
+	while (tail->next)
+	{
+		tail = tail->next;
+		length++;
+	}
+	tail->next = head;
+	
+	// Rotate the head to new position
+	int rotIdx = length - k % length;
+	for (int i = 0; i < rotIdx; i++)
+		tail = tail->next;
+
+	head = tail->next;
+	tail->next = nullptr;
+
+	return head;
+}
+
 int main()
 {
-	std::vector<std::vector<int>> matrix = GenerateMatrix(3);
+	ListNode* node5 = new ListNode(5);
+	ListNode* node4 = new ListNode(4, node5);
+	ListNode* node3 = new ListNode(3, node4);
+	ListNode* node2 = new ListNode(2, node3);
+	ListNode* head = new ListNode(1, node2);
+
+	RotateRight(head, 3);
+
 }
