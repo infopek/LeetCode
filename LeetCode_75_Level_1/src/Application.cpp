@@ -458,5 +458,5 @@ int FirstBadVersion(const int n)
 
 int main()
 {
-	std::cout << FirstBadVersion(5);
+
 }

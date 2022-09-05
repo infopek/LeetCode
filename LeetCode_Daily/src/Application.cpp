@@ -5,11 +5,25 @@
 #include <unordered_map>
 #include <map>
 #include <set>
-#include <set>
 #include <stack>
+#include <queue>
 
 #include <numeric>
 #include <algorithm>
+
+/* Node definition */
+class Node 
+{
+public:
+	int val;
+	std::vector<Node*> children;
+
+	Node() {}
+	Node(int _val)
+		: val(_val) {}
+	Node(int _val, std::vector<Node*> _children)
+		: val(_val), children(_children) {}
+};
 
 /* Singly-linked list node */
 struct ListNode
@@ -176,7 +190,34 @@ std::vector<std::vector<int>> VerticalTraversal(TreeNode* root)
 	return result;
 }
 
-/* 5 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 5 SEPT, 2022: N-ARY TREE LEVEL ORDER TRAVERSAL */
+std::vector<std::vector<int>> LevelOrder(Node* root)
+{
+	std::vector<std::vector<int>> result;
+	if (!root)
+		return result;
+
+	std::queue<Node*> queue;
+	queue.push(root);
+	while (!queue.empty())
+	{
+		int size = queue.size();
+		std::vector<int> level;
+		for (int i = 0; i < size; i++)
+		{
+			Node* curr = queue.front();
+			level.push_back(curr->val);
+			queue.pop();
+
+			for (const auto& child : curr->children)
+				queue.push(child);
+		}
+
+		result.push_back(level);
+	}
+
+	return result;
+}
 
 /* 6 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
