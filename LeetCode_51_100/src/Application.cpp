@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include <set>
 #include <stack>
+#include <queue>
 
 #include <numeric>
 #include <algorithm>
@@ -457,14 +459,29 @@ ListNode* RotateRight(ListNode* head, int k)
 	return head;
 }
 
+/* PROBLEM 62: UNIQUE PATHS */
+int UniquePaths(int m, int n)
+{
+	m--;
+	n--;
+
+	const int total = m + n;
+	const int greater = std::max(m, n);
+
+	// Combinatorics: Choose(total, smaller)
+	long paths = 1;
+	int d = 1;
+	for (int i = greater + 1; i <= total; i++)
+	{
+		paths *= i;
+		paths /= d;
+		d++;
+	}
+
+	return (int)paths;
+}
+
 int main()
 {
-	ListNode* node5 = new ListNode(5);
-	ListNode* node4 = new ListNode(4, node5);
-	ListNode* node3 = new ListNode(3, node4);
-	ListNode* node2 = new ListNode(2, node3);
-	ListNode* head = new ListNode(1, node2);
-
-	RotateRight(head, 3);
-
+	std::cout << UniquePaths(3, 7);
 }
