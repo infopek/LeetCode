@@ -468,7 +468,6 @@ int UniquePaths(int m, int n)
 	const int total = m + n;
 	const int greater = std::max(m, n);
 
-	// Combinatorics: Choose(total, smaller)
 	long paths = 1;
 	int d = 1;
 	for (int i = greater + 1; i <= total; i++)
