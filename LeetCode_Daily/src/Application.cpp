@@ -12,7 +12,7 @@
 #include <algorithm>
 
 /* Node definition */
-class Node 
+class Node
 {
 public:
 	int val;
@@ -63,7 +63,7 @@ void DFSCount(TreeNode* node, int& goodNodes, int prevPathMax, int pathMax)
 		prevPathMax = INT_MIN;
 		return;
 	}
-	
+
 	if (node->val >= pathMax)
 	{
 		prevPathMax = pathMax;
@@ -172,7 +172,7 @@ void VertTravelDFS(TreeNode* root, std::map<int, std::map<int, std::multiset<int
 }
 
 /* 4 SEPT, 2022: VERTICAL ORDER TRAVERSAL OF A BINARY TREE */
-std::vector<std::vector<int>> VerticalTraversal(TreeNode* root) 
+std::vector<std::vector<int>> VerticalTraversal(TreeNode* root)
 {
 	std::map<int, std::map<int, std::multiset<int>>> nodes;
 	VertTravelDFS(root, nodes, 0, 0);
@@ -183,7 +183,7 @@ std::vector<std::vector<int>> VerticalTraversal(TreeNode* root)
 		std::vector<int> currCol;
 		for (const auto mSet : map.second)
 			currCol.insert(currCol.end(), mSet.second.begin(), mSet.second.end());
-		
+
 		result.push_back(currCol);
 	}
 
@@ -219,7 +219,19 @@ std::vector<std::vector<int>> LevelOrder(Node* root)
 	return result;
 }
 
-/* 6 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 6 SEPT, 2022: BINARY TREE PRUNING */
+TreeNode* PruneTree(TreeNode* root)
+{
+	if (!root)
+		return nullptr;
+
+	root->left = PruneTree(root->left);
+	root->right = PruneTree(root->right);
+	if (!root->left && !root->right && root->val == 0)
+		return nullptr;
+
+	return root;
+}
 
 /* 7 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -247,5 +259,10 @@ std::vector<std::vector<int>> LevelOrder(Node* root)
 
 int main()
 {
-	
+	TreeNode* root = new TreeNode(1);
+	root->right = new TreeNode(0);
+	root->right->right = new TreeNode(1);
+	root->right->left = new TreeNode(0);
+
+	PruneTree(root);
 }
