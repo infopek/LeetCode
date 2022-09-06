@@ -437,7 +437,10 @@ int Search(const std::vector<int>& nums, const int target)
 	return -1;
 }
 
-bool IsBadVersion(int version);
+bool IsBadVersion(int version)
+{
+	return true;
+}
 
 /* FIRST BAD VERSION */
 int FirstBadVersion(const int n)
@@ -502,7 +505,99 @@ TreeNode* LowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 	return root;
 }
 
+// -------------	DAY 9	------------- //
+
+void FloodFillDFS(std::vector<std::vector<int>>& image, const int rows, const int cols, int row, int col, const int original, const int newColor)
+{
+	if (image[row][col] != newColor)
+	{
+		// Fill
+		image[row][col] = newColor;
+
+		// Up
+		if (row - 1 >= 0 && image[row - 1][col] == original)
+			FloodFillDFS(image, rows, cols, row - 1, col, original, newColor);
+
+		// Down
+		if (row + 1 < rows && image[row + 1][col] == original)
+			FloodFillDFS(image, rows, cols, row + 1, col, original, newColor);
+
+		// Left
+		if (col - 1 >= 0 && image[row][col - 1] == original)
+			FloodFillDFS(image, rows, cols, row, col - 1, original, newColor);
+
+		// Right
+		if (col + 1 < cols && image[row][col + 1] == original)
+			FloodFillDFS(image, rows, cols, row, col + 1, original, newColor);
+	}
+}
+
+/* FLOOD FILL */
+std::vector<std::vector<int>> FloodFill(std::vector<std::vector<int>>& image, int row, int col, const int newColor) 
+{
+	const int rows = image.size();
+	const int cols = image[0].size();
+	const int original = image[row][col];
+	FloodFillDFS(image, rows, cols, row, col, original, newColor);
+
+	return image;
+}
+
+void NumIslandsDFS(std::vector<std::vector<char>>& grid, const int rows, const int cols, int row, int col)
+{
+	if (grid[row][col] == '1')
+	{
+		grid[row][col] = '0';
+
+		// Up
+		if (row - 1 >= 0)
+			NumIslandsDFS(grid, rows, cols, row - 1, col);
+
+		// Down
+		if (row + 1 < rows)
+			NumIslandsDFS(grid, rows, cols, row + 1, col);
+
+		// Left
+		if (col - 1 >= 0)
+			NumIslandsDFS(grid, rows, cols, row, col - 1);
+
+		// Right
+		if (col + 1 < cols)
+			NumIslandsDFS(grid, rows, cols, row, col + 1);
+	}
+}
+
+/* NUMBER OF ISLANDS */
+int NumIslands(std::vector<std::vector<char>>& grid)
+{
+	int islands = 0;
+	const int rows = grid.size();
+	const int cols = grid[0].size();
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (grid[i][j] == '1')
+			{
+				NumIslandsDFS(grid, rows, cols, i, j);	// mark every land as visited
+				islands++;
+			}
+		}
+	}
+
+	return islands;
+}
+
 int main()
 {
-
+	std::vector<std::vector<char>> grid =
+	{
+		{ '1', '1', '0', '0', '0' },
+		{ '1', '1', '0', '0', '0' },
+		{ '0', '0', '1', '0', '0' },
+		{ '0', '0', '0', '1', '1' }
+	};
+	
+	std::cout << NumIslands(grid);
 }
