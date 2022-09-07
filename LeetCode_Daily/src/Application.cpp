@@ -233,7 +233,41 @@ TreeNode* PruneTree(TreeNode* root)
 	return root;
 }
 
-/* 7 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+void PreorderStr(TreeNode* root, std::string& str)
+{
+	if (!root)
+		return;
+	else
+	{
+		str += std::to_string(root->val);
+		if (root->left)
+		{
+			str += '(';
+			PreorderStr(root->left, str);
+			str += ')';
+		}
+		else if (root->right)	// no left, but right exists
+		{
+			str += "()";
+		}
+		if (root->right)
+		{
+			str += '(';
+			PreorderStr(root->right, str);
+			str += ')';
+		}
+	}
+}
+
+/* 7 SEPT, 2022: CONSTRUCT STRING FROM BINARY TREE */
+std::string TreeToStr(TreeNode* root)
+{
+	std::string result;
+	PreorderStr(root, result);
+
+	return result;
+}
+
 
 /* 8 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -260,9 +294,9 @@ TreeNode* PruneTree(TreeNode* root)
 int main()
 {
 	TreeNode* root = new TreeNode(1);
-	root->right = new TreeNode(0);
-	root->right->right = new TreeNode(1);
-	root->right->left = new TreeNode(0);
+	root->left = new TreeNode(2);
+	root->right = new TreeNode(3);
+	root->left->left = new TreeNode(4);
 
-	PruneTree(root);
+	std::cout << TreeToStr(root);
 }
