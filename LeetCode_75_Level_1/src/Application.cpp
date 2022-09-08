@@ -632,7 +632,49 @@ int ClimbStairs(const int n)
 	return dp[n];
 }
 
+// -------------	DAY 11	------------- //
+
+/* MIN COST CLIMBING STAIRS */
+int MinCostClimbingStairs(const std::vector<int>& costs)
+{
+	const int size = costs.size();
+	int* dp = new int[size];
+	dp[0] = costs[0];
+	dp[1] = costs[1];
+
+	for (int i = 2; i < size; i++)
+		dp[i] = costs[i] + std::min(dp[i - 1], dp[i - 2]);
+
+	int minCost = std::min(dp[size - 1], dp[size - 2]);
+	delete[] dp;
+	return minCost;
+}
+
+/* UNIQUE PATHS */
+int UniquePaths(const int m, const int n)
+{
+	// Initialize dp array
+	int** dp = new int*[m];
+	for (int i = 0; i < m; i++)
+	{
+		dp[i] = new int[n];
+		for (int j = 0; j < n; j++)
+			dp[i][j] = 1;
+	}
+
+	for (int i = 1; i < m; i++)
+		for (int j = 1; j < n; j++)
+			dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+
+	int paths = dp[m - 1][n - 1];
+	for (int i = 0; i < m; i++)
+		delete[] dp[i];
+	delete[] dp;
+
+	return paths;
+}
+
 int main()
 {
-	std::cout << ClimbStairs(6);
+	std::cout << UniquePaths(5, 8);
 }

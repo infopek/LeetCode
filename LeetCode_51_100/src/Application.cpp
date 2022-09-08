@@ -480,6 +480,12 @@ int UniquePaths(int m, int n)
 	return (int)paths;
 }
 
+/* PROBLEM 63: UNIQUE PATHS II */
+int UniquePathsWithObstacles(const std::vector<std::vector<int>>& obstacleGrid) 
+{
+
+}
+
 int main()
 {
 	std::cout << UniquePaths(3, 7);

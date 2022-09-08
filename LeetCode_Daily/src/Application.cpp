@@ -268,8 +268,25 @@ std::string TreeToStr(TreeNode* root)
 	return result;
 }
 
+void Inorder(TreeNode* root, std::vector<int>& values)
+{
+	if (!root)
+		return;
+	else
+	{
+		Inorder(root->left, values);
+		values.push_back(root->val);
+		Inorder(root->right, values);
+	}
+}
 
-/* 8 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 8 SEPT, 2022: BINARY TREE INORDER TRAVERSAL */
+std::vector<int> InorderTraversal(TreeNode* root)
+{
+	std::vector<int> result;
+	Inorder(root, result);
+	return result;
+}
 
 /* 9 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
