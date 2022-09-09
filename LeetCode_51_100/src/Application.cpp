@@ -481,9 +481,18 @@ int UniquePaths(int m, int n)
 }
 
 /* PROBLEM 63: UNIQUE PATHS II */
-int UniquePathsWithObstacles(const std::vector<std::vector<int>>& obstacleGrid) 
+int UniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid) 
 {
+	const int rows = obstacleGrid.size();
+	const int cols = obstacleGrid[0].size();
 
+	for (int i = 1; i < rows; i++)
+	{
+		for (int j = 1; j < cols; j++)
+		{
+
+		}
+	}
 }
 
 int main()

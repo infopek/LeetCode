@@ -288,7 +288,30 @@ std::vector<int> InorderTraversal(TreeNode* root)
 	return result;
 }
 
-/* 9 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 9 SEPT, 2022: THE NUMBER OF WEAK CHARACTERS IN THE GAME */
+int NumberOfWeakCharacters(std::vector<std::vector<int>>& properties) 
+{
+	const int size = properties.size();
+	auto compare = [](const std::vector<int>& lhs, const std::vector<int>& rhs)
+	{
+		if (lhs[0] == rhs[0])
+			return lhs[1] < rhs[1];
+		return lhs[0] > rhs[0];
+	};
+	std::sort(properties.begin(), properties.end(), compare);
+
+
+	int weaklings = 0;
+	int minDef = INT_MIN;
+	for (int i = 0; i < size; i++)
+	{
+		if (properties[i][1] < minDef)
+			weaklings++;
+		minDef = std::max(minDef, properties[i][1]);
+	}
+
+	return weaklings;
+}
 
 /* 10 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -310,10 +333,27 @@ std::vector<int> InorderTraversal(TreeNode* root)
 
 int main()
 {
-	TreeNode* root = new TreeNode(1);
-	root->left = new TreeNode(2);
-	root->right = new TreeNode(3);
-	root->left->left = new TreeNode(4);
+	std::vector<std::vector<int>> properties1 =
+	{
+		{ 5, 5 },
+		{ 6, 3 },
+		{ 3, 6 }
+	};
 
-	std::cout << TreeToStr(root);
+	std::vector<std::vector<int>> properties2 =
+	{
+		{ 2, 2 },
+		{ 3, 3 }
+	};
+
+	std::vector<std::vector<int>> properties3 =
+	{
+		{ 1, 5 },
+		{ 10, 4 },
+		{ 4, 3 }
+	};
+
+	std::cout << NumberOfWeakCharacters(properties1);
+	std::cout << NumberOfWeakCharacters(properties2);
+	std::cout << NumberOfWeakCharacters(properties3);
 }

@@ -674,7 +674,70 @@ int UniquePaths(const int m, const int n)
 	return paths;
 }
 
+// -------------	DAY 12	------------- //
+
+/* FIND ALL ANAGRAMS IN A STRING */
+std::vector<int> FindAnagrams(const std::string& str, const std::string& p) 
+{
+	const int sLength = str.size();
+	const int winLength = p.size();
+	std::vector<int> result;
+
+	std::vector<int> pMap(26, 0);
+	std::vector<int> strMap(26, 0);
+
+	for (int i = 0; i < winLength; i++)
+	{
+		pMap[p[i] - 'a']++;
+		strMap[str[i] - 'a']++;
+	}
+	if (pMap == strMap)
+		result.push_back(0);
+
+	for (int i = winLength; i < sLength; i++)
+	{
+		strMap[str[i - winLength] - 'a']--;
+		strMap[str[i] - 'a']++;
+
+		if (strMap == pMap)
+			result.push_back(i - winLength + 1);
+	}
+
+	return result;
+}
+
+/* LONGEST REPEATING CHARACTER REPLACEMENT */
+int CharacterReplacement(const std::string& str, const int k)
+{
+	const int length = str.length();
+	std::unordered_map<char, int> letters;
+	letters.reserve(26);
+
+	int left = 0;
+	int maxChars = 0;
+	int result = 0;
+	for (int right = 0; right < length; right++)
+	{
+		letters[str[right]]++;
+		maxChars = std::max(maxChars, letters[str[right]]);
+		while (right - left - maxChars + 1 > k)
+		{
+			letters[str[left]]--;
+			left++;
+			for (char c = 'A'; c <= 'Z'; c++)
+				maxChars = std::max(maxChars, letters[c]);
+		}
+
+		result = std::max(result, right - left + 1);
+	}
+
+	return result;
+}
+
 int main()
 {
-	std::cout << UniquePaths(5, 8);
+	std::string s = "cbaebabacd";
+	std::string p = "abc";
+	std::vector<int> result = FindAnagrams(s, p);
+
 }
