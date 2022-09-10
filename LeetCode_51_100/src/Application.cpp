@@ -497,5 +497,5 @@ int UniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid)
 
 int main()
 {
-	std::cout << UniquePaths(3, 7);
+
 }

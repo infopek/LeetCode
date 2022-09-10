@@ -313,7 +313,37 @@ int NumberOfWeakCharacters(std::vector<std::vector<int>>& properties)
 	return weaklings;
 }
 
-/* 10 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+int MaxProfitUnlim(const std::vector<int>& prices)
+{
+	const int size = prices.size();
+	int maxProfit = 0;
+	for (int i = 1; i < size; i++)
+		maxProfit += std::max(prices[i] - prices[i - 1], 0);
+
+	return maxProfit;
+}
+
+/* 10 SEPT, 2022: BEST TIME TO BUY AND SELL STOCK IV */
+int MaxProfit(const int k, const std::vector<int>& prices)
+{
+	const int size = prices.size();
+	if (k >= size / 2)
+		return MaxProfitUnlim(prices);
+
+	std::vector<int> buys(k + 1, INT_MIN);
+	std::vector<int> sells(k + 1, 0);
+	for (int i = 0; i < size; i++)
+	{
+		int curr = prices[i];
+		for (int j = 1; j <= k; j++)
+		{
+			buys[j] = std::max(buys[j], sells[j - 1] - curr);
+			sells[j] = std::max(sells[j], buys[j] + curr);
+		}
+	}
+
+	return sells[k];
+}
 
 /* 11 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -333,27 +363,7 @@ int NumberOfWeakCharacters(std::vector<std::vector<int>>& properties)
 
 int main()
 {
-	std::vector<std::vector<int>> properties1 =
-	{
-		{ 5, 5 },
-		{ 6, 3 },
-		{ 3, 6 }
-	};
-
-	std::vector<std::vector<int>> properties2 =
-	{
-		{ 2, 2 },
-		{ 3, 3 }
-	};
-
-	std::vector<std::vector<int>> properties3 =
-	{
-		{ 1, 5 },
-		{ 10, 4 },
-		{ 4, 3 }
-	};
-
-	std::cout << NumberOfWeakCharacters(properties1);
-	std::cout << NumberOfWeakCharacters(properties2);
-	std::cout << NumberOfWeakCharacters(properties3);
+	int k = 2;
+	std::vector<int> prices{ {3, 2, 6, 5, 0, 3} };
+	std::cout << MaxProfit(k, prices);
 }
