@@ -734,10 +734,62 @@ int CharacterReplacement(const std::string& str, const int k)
 	return result;
 }
 
+// -------------	DAY 13	------------- //
+
+/* TWO SUM */
+std::vector<int> TwoSum(const std::vector<int>& nums, const int target)
+{
+	const int size = nums.size();
+	std::unordered_map<int, int> map;
+	std::vector<int> indices(2);
+	for (int i = 0; i < size; i++)
+	{
+		int searchedNum = target - nums[i];
+		if (map.find(searchedNum) != map.end())
+			return { i, map[searchedNum] };
+		else
+			map[nums[i]] = i;
+	}
+
+	return { -1, -1 };
+}
+
+/* BULLS AND COWS */
+std::string GetHint(const std::string& secret, const std::string& guess)
+{
+	std::string hint = "";
+	std::unordered_map<char, int> letters;
+	const int length = secret.length();
+
+	int bulls = 0;
+	int cows = 0;
+	for (int i = 0; i < length; i++)
+	{
+		letters[secret[i]]++;
+		if (guess[i] == secret[i])
+		{
+			letters[secret[i]]--;
+			bulls++;
+		}
+	}
+	for (int i = 0; i < length; i++)
+	{
+		if (guess[i] != secret[i] && letters[guess[i]] > 0)
+		{
+			letters[guess[i]]--;
+			cows++;
+		}
+	}
+
+	hint += std::to_string(bulls) + 'A';
+	hint += std::to_string(cows) + 'B';
+
+	return hint;
+}
+
 int main()
 {
-	std::string s = "cbaebabacd";
-	std::string p = "abc";
-	std::vector<int> result = FindAnagrams(s, p);
-
+	std::string secret = "1807";
+	std::string guess = "7810";
+	std::cout << GetHint(secret, guess);
 }
