@@ -345,7 +345,32 @@ int MaxProfit(const int k, const std::vector<int>& prices)
 	return sells[k];
 }
 
-/* 11 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 11 SEPT, 2022: MAXIMUM PERFORMANCE OF A TEAM */
+int MaxPerformance(const int n, const std::vector<int>& speeds, const std::vector<int>& efficiencies, const int k)
+{
+	std::vector<std::pair<int, int>> engineers(n);
+	for (int i = 0; i < n; i++)
+		engineers[i] = std::make_pair(efficiencies[i], speeds[i]);
+	std::sort(engineers.rbegin(), engineers.rend());
+
+	std::priority_queue<int, std::vector<int>, std::greater<int>> pQueue;
+	long sum = 0;
+	long result = 0;
+	for (const auto& [eff, spd] : engineers)
+	{
+		sum += spd;
+		pQueue.push(spd);
+		if (pQueue.size() > k)
+		{
+			sum -= pQueue.top();
+			pQueue.pop();
+		}
+
+		result = std::max(result, sum * eff);
+	}
+
+	return result % (int)(1e9 + 7);
+}
 
 /* 12 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 

@@ -55,7 +55,7 @@ struct ListNode
 
 // --------------------------------------------- //
 
-// -------------	DAY 1	------------- //
+// -------------	DAY 1: PREFIX SUM	------------- //
 
 /* RUNNING SUM OF 1D ARRAY */
 std::vector<int> RunningSum(const std::vector<int>& nums)
@@ -98,7 +98,7 @@ int PivotIndex(const std::vector<int>& nums)
 	return -1;
 }
 
-// -------------	DAY 2	------------- //
+// -------------	DAY 2: STRING	------------- //
 
 /* ISOMORPHIC STRINGS */
 bool IsIsomorphic(const std::string& str1, const std::string& str2)
@@ -154,7 +154,7 @@ bool IsSubsequence(const std::string& string, const std::string& text)
 	return false;
 }
 
-// -------------	DAY 3	------------- //
+// -------------	DAY 3: LINKED LIST	------------- //
 
 /* MERGE TWO SORTED LISTS */
 ListNode* mergeTwoLists(ListNode* list1, ListNode* list2)
@@ -243,7 +243,7 @@ ListNode* ReverseList(ListNode* head)
 	return rev;*/
 }
 
-// -------------	DAY 4	------------- //
+// -------------	DAY 4: LINKED LIST	------------- //
 
 /* MIDDLE OF THE LINKED LIST */
 ListNode* MiddleNode(ListNode* head)
@@ -285,7 +285,7 @@ ListNode* DetectCycle(ListNode* head)
 
 }
 
-// -------------	DAY 5	------------- //
+// -------------	DAY 5: GREEDY	------------- //
 
 /* BEST TIME TO BUY AND SELL STOCK */
 int MaxProfit(const std::vector<int>& prices)
@@ -326,7 +326,7 @@ int LongestPalindrome(const std::string& str)
 	return (length > 0) ? result + 1 : result;
 }
 
-// -------------	DAY 6	------------- //
+// -------------	DAY 6: TREE	------------- //
 
 void PreorderRec(Node* root, std::vector<int>& result)
 {
@@ -416,7 +416,7 @@ std::vector<std::vector<int>> LevelOrder(TreeNode* root)
 	return result;
 }
 
-// -------------	DAY 7	------------- //
+// -------------	DAY 7: BINARY SEARCH	------------- //
 
 /* BINARY SEARCH */
 int Search(const std::vector<int>& nums, const int target)
@@ -461,7 +461,7 @@ int FirstBadVersion(const int n)
 	return low;
 }
 
-// -------------	DAY 8	------------- //
+// -------------	DAY 8: BINARY SEARCH TREE	------------- //
 
 /* VALIDATE BINARY SEARCH TREE */
 bool IsValidBST(TreeNode* root)
@@ -507,7 +507,7 @@ TreeNode* LowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 	return root;
 }
 
-// -------------	DAY 9	------------- //
+// -------------	DAY 9: GRAPH/BFS/DFS	------------- //
 
 void FloodFillDFS(std::vector<std::vector<int>>& image, const int rows, const int cols, int row, int col, const int original, const int newColor)
 {
@@ -591,7 +591,7 @@ int NumIslands(std::vector<std::vector<char>>& grid)
 	return islands;
 }
 
-// -------------	DAY 10	------------- //
+// -------------	DAY 10: DYNAMIC PROGRAMMING	------------- //
 
 /* FIBONACCI NUMBER */
 int Fib(const int n)
@@ -632,7 +632,7 @@ int ClimbStairs(const int n)
 	return dp[n];
 }
 
-// -------------	DAY 11	------------- //
+// -------------	DAY 11: DYNAMIC PROGRAMMING	------------- //
 
 /* MIN COST CLIMBING STAIRS */
 int MinCostClimbingStairs(const std::vector<int>& costs)
@@ -674,7 +674,7 @@ int UniquePaths(const int m, const int n)
 	return paths;
 }
 
-// -------------	DAY 12	------------- //
+// -------------	DAY 12: SLIDING WINDOW/TWO POINTER	------------- //
 
 /* FIND ALL ANAGRAMS IN A STRING */
 std::vector<int> FindAnagrams(const std::string& str, const std::string& p) 
@@ -734,7 +734,7 @@ int CharacterReplacement(const std::string& str, const int k)
 	return result;
 }
 
-// -------------	DAY 13	------------- //
+// -------------	DAY 13: HASHMAP	------------- //
 
 /* TWO SUM */
 std::vector<int> TwoSum(const std::vector<int>& nums, const int target)
@@ -787,9 +787,12 @@ std::string GetHint(const std::string& secret, const std::string& guess)
 	return hint;
 }
 
+// -------------	DAY 14: STACK	------------- //
+
+/* BACKSPACE STRING COMPARE */
+
+
 int main()
 {
-	std::string secret = "1807";
-	std::string guess = "7810";
-	std::cout << GetHint(secret, guess);
+	
 }
