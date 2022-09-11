@@ -790,9 +790,98 @@ std::string GetHint(const std::string& secret, const std::string& guess)
 // -------------	DAY 14: STACK	------------- //
 
 /* BACKSPACE STRING COMPARE */
+bool BackspaceCompare(const std::string& str1, const std::string& str2)
+{
+	std::stack<char> stack;
+	std::string text1 = "";
+	std::string text2 = "";
 
+	// Process str1
+	for (const auto c : str1)
+	{
+		if (c != '#')
+			stack.push(c);
+		else if (c == '#') 
+		{
+			if (stack.empty())
+				continue;
+			else
+				stack.pop();
+		}
+	}
+	while (!stack.empty())
+	{
+		text1 += stack.top();
+		stack.pop();
+	}
+
+	// Process str2
+	for (const auto c : str2)
+	{
+		if (c != '#')
+			stack.push(c);
+		else if (c == '#')
+		{
+			if (stack.empty())
+				continue;
+			else
+				stack.pop();
+		}
+	}
+	while (!stack.empty())
+	{
+		text2 += stack.top();
+		stack.pop();
+	}
+
+	return text1 == text2;
+}
+
+std::string DecodeStrRec(const std::string& str, const int length, int& idx)
+{
+	std::string decoded;
+
+	while (idx < length && str[idx] != ']')
+	{
+		if (!std::isdigit(str[idx]))
+		{
+			decoded += str[idx];
+			idx++;
+		}
+		else
+		{
+			int times = 0;
+			while (idx < length && std::isdigit(str[idx]))
+			{
+				times = 10 * times + (str[idx] - '0');
+				idx++;
+			}
+
+			idx++;	// skip open bracket
+			std::string temp = DecodeStrRec(str, length, idx);
+			idx++;	// skip close bracket
+
+			while (times > 0)
+			{
+				decoded += temp;
+				times--;
+			}
+		}
+	}
+
+	return decoded;
+}
+
+/* DECODE STRING */
+std::string DecodeString(const std::string& str)
+{
+	const int length = str.length();
+	int idx = 0;
+	return DecodeStrRec(str, length, idx);
+}
 
 int main()
 {
-	
+	std::string encoded = "3[a]2[bc]";
+	std::cout << DecodeString(encoded);
 }
