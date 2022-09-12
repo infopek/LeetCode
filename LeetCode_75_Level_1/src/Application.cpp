@@ -880,8 +880,73 @@ std::string DecodeString(const std::string& str)
 	return DecodeStrRec(str, length, idx);
 }
 
+// -------------	DAY 15: HEAP	------------- //
+
+/* LAST STONE WEIGHT */
+int LastStoneWeight(const std::vector<int>& stones)
+{
+	std::priority_queue<int> pQueue(stones.begin(), stones.end());
+	while (pQueue.size() > 1)
+	{
+		int heaviest = pQueue.top();
+		pQueue.pop();
+		int secHeaviest = pQueue.top();
+		pQueue.pop();
+		if (heaviest > secHeaviest)
+			pQueue.push(heaviest - secHeaviest);
+	}
+
+	return pQueue.empty() ? 0 : pQueue.top();
+}
+
+/* TOP K FREQUENT WORDS */
+std::vector<std::string> TopKFrequent(std::vector<std::string>& words, int k)
+{
+	// Store word frequency in a hash map
+	const int size = words.size();
+	std::unordered_map<std::string, int> wordFreq;
+	for (const auto& word : words)
+		wordFreq[word]++;
+
+	// Initialize priority queue
+	using FreqWordPair = std::pair<int, std::string>;
+	auto compare = [](const FreqWordPair& p1, const FreqWordPair& p2)
+	{
+		if (p1.first == p2.first)
+			return p1.second < p2.second;
+		return p1.first > p2.first;
+	};
+	std::priority_queue<FreqWordPair, std::vector<FreqWordPair>, decltype(compare)> pQueue(compare);
+
+	// Fill priority queue with k most common words
+	int qSize = 0;
+	for (const auto& [word, count] : wordFreq)
+	{
+		pQueue.push({ count, word });
+		qSize++;
+		if (qSize > k)
+		{
+			pQueue.pop();
+			qSize--;
+		}
+	}
+
+	// Fill result
+	std::vector<std::string> result(k);
+	k--;
+	while (!pQueue.empty())
+	{
+		result[k] = pQueue.top().second;
+		k--;
+		pQueue.pop();
+	}
+
+	return result;
+}
+
+// --------------------------------------------- //
+
 int main()
 {
-	std::string encoded = "3[a]2[bc]";
-	std::cout << DecodeString(encoded);
+
 }
