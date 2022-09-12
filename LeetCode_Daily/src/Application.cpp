@@ -372,7 +372,36 @@ int MaxPerformance(const int n, const std::vector<int>& speeds, const std::vecto
 	return result % (int)(1e9 + 7);
 }
 
-/* 12 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 12 SEPT, 2022: BAG OF TOKENS */
+int BagOfTokensScore(std::vector<int>& tokens, int power)
+{
+	const int size = tokens.size();
+	std::sort(tokens.begin(), tokens.end());
+
+	int result = 0;
+	int score = 0;
+	int left = 0;
+	int right = size - 1;
+	while (left <= right)
+	{
+		if (power >= tokens[left])
+		{
+			power -= tokens[left];
+			result = std::max(result, ++score);
+			left++;
+		}
+		else if (score > 0)
+		{
+			power += tokens[right];
+			score--;
+			right--;
+		}
+		else
+			break;
+	}
+
+	return result;
+}
 
 /* 13 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -388,7 +417,7 @@ int MaxPerformance(const int n, const std::vector<int>& speeds, const std::vecto
 
 int main()
 {
-	int k = 2;
-	std::vector<int> prices{ {3, 2, 6, 5, 0, 3} };
-	std::cout << MaxProfit(k, prices);
+	std::vector<int> tokens = { 71, 55, 82 };
+	int power = 54;
+	std::cout << BagOfTokensScore(tokens, power);
 }
