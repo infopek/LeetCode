@@ -536,6 +536,12 @@ int MinPathSum(std::vector<std::vector<int>>& grid)
 	return grid[rows - 1][cols - 1];
 }
 
+/* PROBLEM 65: VALID NUMBER */
+bool IsNumber(const std::string& str)
+{
+
+}
+
 int main()
 {
 	std::vector<std::vector<int>> grid =

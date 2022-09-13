@@ -403,7 +403,42 @@ int BagOfTokensScore(std::vector<int>& tokens, int power)
 	return result;
 }
 
-/* 13 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 13 SEPT, 2022: UTF-8 VALIDATION */
+bool ValidUtf8(const std::vector<int>& data)
+{
+	const int bytes = data.size();
+
+	// Special case, only 1 byte
+	if (bytes == 1)
+		return ((data[0] & 0b10000000) != 0b10000000);
+	else if (bytes > 4)
+		return false;
+	
+	int remaining = 0;
+	for (int i = 0; i < bytes; i++)
+	{
+		int curr = data[i];
+		if (remaining == 0)
+		{
+			if ((curr >> 3) == 0b11110)
+				remaining = 3;
+			else if ((curr >> 4) == 0b1110)
+				remaining = 2;
+			else if ((curr >> 5) == 0b110)
+				remaining = 1;
+		}
+		else
+		{
+			// Continuation bytes, 2 msb must be 10
+			if ((curr >> 6) != 0b10)
+				return false;
+
+			remaining--;
+		}
+	}
+
+	return remaining == 0;
+}
 
 /* 14 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -417,7 +452,7 @@ int BagOfTokensScore(std::vector<int>& tokens, int power)
 
 int main()
 {
-	std::vector<int> tokens = { 71, 55, 82 };
-	int power = 54;
-	std::cout << BagOfTokensScore(tokens, power);
+	std::vector<int> data1 = { 197, 130, 1 };
+	std::vector<int> data2 = { 235, 140, 4 };
+	std::cout << ValidUtf8(data1);
 }
