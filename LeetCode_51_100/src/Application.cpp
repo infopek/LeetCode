@@ -539,16 +539,70 @@ int MinPathSum(std::vector<std::vector<int>>& grid)
 /* PROBLEM 65: VALID NUMBER */
 bool IsNumber(const std::string& str)
 {
+	const int length = str.length();
+	int idx = 0;
+	
+	// Skip sign
+	if (str[0] == '+' || str[0] == '-')
+		idx++;
 
+	// Skip digits before decimal
+	int aroundDecimal = 0;
+	while (idx < length && '0' <= str[idx] && str[idx] <= '9')
+	{
+		idx++;
+		aroundDecimal++;
+	}
+
+	// Skip decimal point
+	if (idx < length && str[idx] == '.')
+		idx++;
+
+	// Skip digits after decimal
+	while (idx < length && '0' <= str[idx] && str[idx] <= '9')
+	{
+		idx++;
+		aroundDecimal++;
+	}
+
+	if (idx == 0 || aroundDecimal == 0)
+		return false;
+
+	// Skip exponent
+	if (idx < length && (str[idx] == 'E' || str[idx] == 'e'))
+	{
+		idx++;
+
+		// Skip sign after exponent
+		if (idx < length && (str[idx] == '+' || str[idx] == '-'))
+			idx++;
+
+		// Skip at least one integer
+		int count = 0;
+		while (idx < length && '0' <= str[idx] && str[idx] <= '9')
+		{
+			idx++;
+			count++;
+		}
+		if (count == 0)
+			return false;
+	}
+
+	// Valid if we are at the end of the string
+	return idx == length;
 }
 
 int main()
 {
-	std::vector<std::vector<int>> grid =
-	{
-		{1, 3, 1},
-		{1, 5, 1},
-		{4, 2, 1}
-	};
-	std::cout << MinPathSum(grid);
+	std::vector<std::string> validNums = { "2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3",
+		"3e+7", "+6e-1", "53.5e93", "-123.456e789" };
+	std::vector<std::string> invalidNums = { "abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53" };
+
+	for (const auto& num : validNums)
+		std::cout << IsNumber(num) << ", ";
+
+	std::cout << std::endl;
+
+	for (const auto& notNum : invalidNums)
+		std::cout << IsNumber(notNum) << ", ";
 }
