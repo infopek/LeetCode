@@ -592,17 +592,33 @@ bool IsNumber(const std::string& str)
 	return idx == length;
 }
 
+/* PROBLEM 66: PLUS ONE */
+std::vector<int> PlusOne(std::vector<int>& digits)
+{
+	const int numDigits = digits.size();
+	int carry = 1;
+	int i = numDigits - 1;
+	while (i >= 0 && carry != 0)
+	{
+		if (digits[i] < 9)
+		{
+			digits[i]++;
+			carry = 0;
+		}
+		else
+		{
+			digits[i] = 0;
+			carry = 1;
+		}
+		i--;
+	}
+	if (carry == 1)
+		digits.insert(digits.begin(), 1);
+
+	return digits;
+}
+
 int main()
 {
-	std::vector<std::string> validNums = { "2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3",
-		"3e+7", "+6e-1", "53.5e93", "-123.456e789" };
-	std::vector<std::string> invalidNums = { "abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53" };
-
-	for (const auto& num : validNums)
-		std::cout << IsNumber(num) << ", ";
-
-	std::cout << std::endl;
-
-	for (const auto& notNum : invalidNums)
-		std::cout << IsNumber(notNum) << ", ";
+	
 }
