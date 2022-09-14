@@ -440,7 +440,27 @@ bool ValidUtf8(const std::vector<int>& data)
 	return remaining == 0;
 }
 
-/* 14 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+void PalindromeSearchDFS(TreeNode* node, int& result, int oddFreq)
+{
+	if (!node)
+		return;
+	
+	oddFreq ^= (1 << node->val);
+	if (!node->left && !node->right)
+		if ((oddFreq & (oddFreq - 1)) == 0)
+			result++;
+
+	PalindromeSearchDFS(node->left, result, oddFreq);
+	PalindromeSearchDFS(node->right, result, oddFreq);
+}
+
+/* 14 SEPT, 2022: PSEUDO-PALINDROMIC PATHS IN A BINARY TREE */
+int PseudoPalindromicPaths(TreeNode* root)
+{
+	int result = 0;
+	PalindromeSearchDFS(root, result, 0);
+	return result;
+}
 
 /* 15 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
