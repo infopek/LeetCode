@@ -462,7 +462,48 @@ int PseudoPalindromicPaths(TreeNode* root)
 	return result;
 }
 
-/* 15 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+/* 15 SEPT, 2022: FIND ORIGINAL ARRAY FROM DOUBLED ARRAY */
+std::vector<int> FindOriginalArray(std::vector<int>& changed)
+{
+	const int size = changed.size();
+	if (size % 2 != 0)
+		return {};
+
+	std::unordered_map<int, int> amountMap;
+	for (int i = 0; i < size; i++)
+		amountMap[changed[i]]++;
+
+	std::sort(changed.begin(), changed.end());
+	std::vector<int> original;
+	for (int i = 0; i < size; i++)
+	{
+		int num = changed[i];
+		if (amountMap[num] > 0)
+		{
+			// Isn't already a double of something else
+			int numDouble = 2 * num;
+			if (amountMap.find(numDouble) != amountMap.end() && amountMap[numDouble] > 0)
+			{
+				// Has a double somewhere later in the array
+				original.push_back(num);
+				amountMap[numDouble]--;
+			}
+			else
+			{
+				// Doesn't have a double
+				return {};
+			}
+
+			amountMap[num]--;
+		}
+	}
+
+	for (auto it = amountMap.begin(); it != amountMap.end(); it++)
+		if (it->second > 0)
+			return {};
+
+	return original;
+}
 
 /* 16 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
 
@@ -472,7 +513,7 @@ int PseudoPalindromicPaths(TreeNode* root)
 
 int main()
 {
-	std::vector<int> data1 = { 197, 130, 1 };
-	std::vector<int> data2 = { 235, 140, 4 };
-	std::cout << ValidUtf8(data1);
+	std::vector<int> changed = { 22, 4, 3, 9, 1, 2, 5, 6, 10, 11, 2, 8, 18, 1, 1 };
+	std::vector<int> original = FindOriginalArray(changed);
+	
 }
