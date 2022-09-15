@@ -618,7 +618,85 @@ std::vector<int> PlusOne(std::vector<int>& digits)
 	return digits;
 }
 
+/* PROBLEM 67: ADD BINARY */
+std::string AddBinary(const std::string& str1, const std::string& str2)
+{
+	const int length1 = str1.length();
+	const int length2 = str2.length();
+
+	int idx1 = length1 - 1;
+	int idx2 = length2 - 1;
+
+	std::string sum;
+	const int sumLength = std::max(length1, length2) + 1;
+	sum.resize(sumLength);
+	int sumIdx = sumLength - 1;
+
+	char carry = '0';
+	while (idx1 >= 0 && idx2 >= 0)
+	{
+		if (str1[idx1] == '1' && str2[idx2] == '1')
+		{
+			sum[sumIdx] = carry;
+			carry = '1';
+		}
+		else if (str1[idx1] == '1' || str2[idx2] == '1')
+			sum[sumIdx] = (carry == '0') ? '1' : '0';
+		else
+		{
+			sum[sumIdx] = carry;
+			carry = '0';
+		}
+
+		idx1--;
+		idx2--;
+		sumIdx--;
+	}
+
+	while (idx1 >= 0)
+	{
+		if (str1[idx1] == '1' && carry == '1')
+			sum[sumIdx] = '0';
+		else if (str1[idx1] == '1' || carry == '1')
+		{
+			sum[sumIdx] = '1';
+			carry = '0';
+		}
+		else
+			sum[sumIdx] = '0';
+
+		idx1--;
+		sumIdx--;
+	}
+
+	while (idx2 >= 0)
+	{
+		if (str2[idx2] == '1' && carry == '1')
+			sum[sumIdx] = '0';
+		else if (str2[idx2] == '1' || carry == '1')
+		{
+			sum[sumIdx] = '1';
+			carry = '0';
+		}
+		else
+			sum[sumIdx] = '0';
+
+		idx2--;
+		sumIdx--;
+	}
+
+	if (carry == '1')
+		sum[0] = '1';
+	else
+		sum = sum.substr(1, sumLength - 1);
+
+	return sum;
+}
+
 int main()
 {
-	
+	std::string str1 = "110010";
+	std::string str2 = "100";
+	std::string sum = AddBinary(str1, str2);
+
 }
