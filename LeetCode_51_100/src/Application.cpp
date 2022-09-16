@@ -18,9 +18,9 @@ public:
 	std::vector<Node*> children;
 
 	Node() {}
-	Node(int _val) 
+	Node(int _val)
 		: val(_val) {}
-	Node(int _val, std::vector<Node*> _children) 
+	Node(int _val, std::vector<Node*> _children)
 		: val(_val), children(_children) {}
 };
 
@@ -219,7 +219,7 @@ bool CanJump(const std::vector<int>& nums)
 }
 
 /* PROBLEM 56: MERGE INTERVALS */
-std::vector<std::vector<int>> Merge(std::vector<std::vector<int>>& intervals) 
+std::vector<std::vector<int>> Merge(std::vector<std::vector<int>>& intervals)
 {
 	const int numIntervals = intervals.size();
 	std::sort(intervals.begin(), intervals.end());
@@ -286,7 +286,7 @@ std::vector<std::vector<int>> MergeSortedIntervals(const std::vector<std::vector
 }
 
 /* PROBLEM 57: INSERT INTERVAL */
-std::vector<std::vector<int>> Insert(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval) 
+std::vector<std::vector<int>> Insert(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval)
 {
 	int numIntervals = intervals.size();
 
@@ -318,7 +318,7 @@ int LengthOfLastWord(const std::string& str)
 }
 
 /* PROBLEM 59: SPIRAL MATRIX II */
-std::vector<std::vector<int>> GenerateMatrix(const int n) 
+std::vector<std::vector<int>> GenerateMatrix(const int n)
 {
 	std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
 
@@ -435,7 +435,7 @@ std::string GetPermutation(int n, int k)
 ListNode* RotateRight(ListNode* head, int k)
 {
 	// Special case
-	if (!head)	
+	if (!head)
 		return nullptr;
 
 	// Calculate length of list
@@ -447,7 +447,7 @@ ListNode* RotateRight(ListNode* head, int k)
 		length++;
 	}
 	tail->next = head;
-	
+
 	// Rotate the head to new position
 	int rotIdx = length - k % length;
 	for (int i = 0; i < rotIdx; i++)
@@ -481,7 +481,7 @@ int UniquePaths(int m, int n)
 }
 
 /* PROBLEM 63: UNIQUE PATHS II */
-int UniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid) 
+int UniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid)
 {
 	const int rows = obstacleGrid.size();
 	const int cols = obstacleGrid[0].size();
@@ -541,7 +541,7 @@ bool IsNumber(const std::string& str)
 {
 	const int length = str.length();
 	int idx = 0;
-	
+
 	// Skip sign
 	if (str[0] == '+' || str[0] == '-')
 		idx++;
@@ -693,10 +693,114 @@ std::string AddBinary(const std::string& str1, const std::string& str2)
 	return sum;
 }
 
+/* PROBLEM 68: TEXT JUSTIFICATION */
+std::vector<std::string> FullJustify(const std::vector<std::string>& words, const int maxWidth)
+{
+	const int numWords = words.size();
+	int wordIdx = 0;
+
+	std::vector<std::string> justified;
+	while (wordIdx < numWords)
+	{
+		// Line
+		std::string currLine;
+		currLine.resize(maxWidth);
+		int lineIdx = 0;
+
+		// Count # of words that fit on current line with 1 space between them
+		int wordsPerLine = 0;
+		int baseLength = 0;
+		while (wordIdx < numWords && (baseLength + words[wordIdx].length()) <= maxWidth)
+		{
+			baseLength += words[wordIdx].length() + 1;
+			wordsPerLine++;
+			wordIdx++;
+		}
+		baseLength--;
+
+		int allSpaces = maxWidth - (baseLength - (wordsPerLine - 1));
+		if (wordIdx == numWords || wordsPerLine == 1)
+		{
+			// Last line or one word fits -> left-justify
+			int i = 0;
+			while (i < wordsPerLine)
+			{
+				// Add word
+				for (const auto c : words[wordIdx - wordsPerLine + i])
+				{
+					currLine[lineIdx] = c;
+					lineIdx++;
+				}
+				i++;
+
+				if (i < wordsPerLine)
+				{
+					// Add only one space
+					currLine[lineIdx] = ' ';
+					lineIdx++;
+					allSpaces--;
+				}
+				else
+				{
+					// Fill rest of line with spaces
+					for (int s = 0; s < allSpaces; s++)
+					{
+						currLine[lineIdx] = ' ';
+						lineIdx++;
+					}
+				}
+			}
+		}
+		else
+		{
+			// Count # of spaces after words, # of extra spaces to be distributed starting from the left
+			int spacesAfterWord = allSpaces / (wordsPerLine - 1);
+			int extraSpaces = allSpaces % (wordsPerLine - 1);
+
+			int i = 0;
+			while (i < wordsPerLine)
+			{
+				// Add word
+				for (const auto c : words[wordIdx - wordsPerLine + i])
+				{
+					currLine[lineIdx] = c;
+					lineIdx++;
+				}
+				i++;
+
+				if (i < wordsPerLine)
+				{
+					// Add spaces
+					for (int s = 0; s < spacesAfterWord; s++)
+					{
+						currLine[lineIdx] = ' ';
+						lineIdx++;
+					}
+					if (extraSpaces > 0)
+					{
+						currLine[lineIdx] = ' ';
+						lineIdx++;
+						extraSpaces--;
+					}
+				}
+			}
+		}
+
+		justified.push_back(currLine);
+	}
+
+	return justified;
+}
+
 int main()
 {
-	std::string str1 = "110010";
-	std::string str2 = "100";
-	std::string sum = AddBinary(str1, str2);
+	std::vector<std::string> words1 = { "Science","is","what","we","understand","well","enough","to","explain","to","a","computer.",
+		"Art","is","everything","else","we","do" };
+	std::vector<std::string> words2 = { "What","must","be","acknowledgment","shall","be" };
+
+	int maxWidth1 = 20;
+	int maxWidth2 = 16;
+
+	std::vector<std::string> justified = FullJustify(words1, maxWidth1);
 
 }
