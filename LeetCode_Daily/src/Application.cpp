@@ -505,15 +505,53 @@ std::vector<int> FindOriginalArray(std::vector<int>& changed)
 	return original;
 }
 
-/* 16 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+int ScoreMemo(std::vector<std::vector<int>>& dp, std::vector<int>& nums, std::vector<int>& multipliers, int mSize, int left, int right, int depth)
+{
+	if (depth == mSize)
+		return 0;
+	if (dp[depth][left] > INT_MIN)
+		return dp[depth][left];
 
-/* 17 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+	int leftBranch = nums[left] * multipliers[depth] + ScoreMemo(dp, nums, multipliers, mSize, left + 1, right, depth + 1);
+	int rightBranch = nums[right] * multipliers[depth] + ScoreMemo(dp, nums, multipliers, mSize, left, right - 1, depth + 1);
+	dp[depth][left] = std::max(leftBranch, rightBranch);
 
-/* 18 SEPT, 2022: COUNT GOOD NODES IN BINARY TREE */
+	return dp[depth][left];
+}
+
+/* 16 SEPT, 2022: MAXIMUM SCORE FROM PERFORMING MULTIPLICATION OPERATIONS */
+int MaximumScore(std::vector<int>& nums, std::vector<int>& multipliers)
+{
+	const int nSize = nums.size();
+	const int mSize = multipliers.size();
+	std::vector<std::vector<int>> dp(mSize + 1, std::vector<int>(mSize + 1, INT_MIN));
+	
+	return ScoreMemo(dp, nums, multipliers, mSize, 0, nSize - 1, 0);
+}
+
+/* 17 SEPT, 2022:  */
+
+/* 19 SEPT, 2022:  */
+
+/* 20 SEPT, 2022:  */
+
+/* 21 SEPT, 2022:  */
+
+/* 22 SEPT, 2022:  */
+
+/* 23 SEPT, 2022:  */
+
+/* 24 SEPT, 2022:  */
+
+/* 25 SEPT, 2022:  */
+
+/* 26 SEPT, 2022:  */
+
+/* 27 SEPT, 2022:  */
 
 int main()
 {
-	std::vector<int> changed = { 22, 4, 3, 9, 1, 2, 5, 6, 10, 11, 2, 8, 18, 1, 1 };
-	std::vector<int> original = FindOriginalArray(changed);
-	
+	std::vector<int> nums = { -5, -3, -3, -2, 7, 1 };
+	std::vector<int> multipliers = { -10, -5, 3, 4, 6 };
+	std::cout << MaximumScore(nums, multipliers);
 }
