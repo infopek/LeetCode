@@ -792,15 +792,29 @@ std::vector<std::string> FullJustify(const std::vector<std::string>& words, cons
 	return justified;
 }
 
+/* PROBLEM 69: SQRT(X) */
+int MySqrt(int x)
+{
+	int left = 1;
+	int right = x;
+	while (left <= right)
+	{
+		int mid = left + (right - left) / 2;
+		if (mid == x / mid)
+			return mid;
+		else if (mid < x / mid)
+			left = mid + 1;
+		else
+			right = mid - 1;
+	}
+
+	return std::min(left, right);
+}
+
 int main()
 {
-	std::vector<std::string> words1 = { "Science","is","what","we","understand","well","enough","to","explain","to","a","computer.",
-		"Art","is","everything","else","we","do" };
-	std::vector<std::string> words2 = { "What","must","be","acknowledgment","shall","be" };
-
-	int maxWidth1 = 20;
-	int maxWidth2 = 16;
-
-	std::vector<std::string> justified = FullJustify(words1, maxWidth1);
-
+	for (int i = 0; i < 20; i++)
+	{
+		std::cout << "sqrt(" << i << ") = " << MySqrt(i) << std::endl;
+	}
 }
