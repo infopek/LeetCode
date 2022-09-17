@@ -793,7 +793,7 @@ std::vector<std::string> FullJustify(const std::vector<std::string>& words, cons
 }
 
 /* PROBLEM 69: SQRT(X) */
-int MySqrt(int x)
+int MySqrt(const int x)
 {
 	int left = 1;
 	int right = x;
@@ -827,10 +827,58 @@ int ClimbStairs(const int n)
 	return dp[n];
 }
 
+/* PROBLEM 71: SIMPLIFY PATH */
+std::string SimplifyPath(std::string& path)
+{
+	int length = path.length();
+	std::stack<std::string> stack;
+
+	if (path[length - 1] != '/')
+	{
+		path += "/";
+		length++;
+	}
+
+	int i = 1;	// skip the first '/'
+	std::string dir = "";
+	while (i < length)
+	{
+		if (path[i] == '/')
+		{
+			if (dir == "" || dir == ".")
+			{
+				// Skip   
+			}
+			else if (dir == "..")
+			{
+				if (!stack.empty())
+					stack.pop();
+			}
+			else
+				stack.push(dir);
+
+			dir = "";
+		}
+		else
+			dir.push_back(path[i]);
+
+		i++;
+	}
+
+	// Fill resulting path from stack
+	std::string canonical = "";
+	while (!stack.empty())
+	{
+		canonical = '/' + stack.top() + canonical;
+		stack.pop();
+	}
+	if (canonical.length() == 0)
+		canonical = "/";
+
+	return canonical;
+}
+
 int main()
 {
-	for (int i = 0; i < 20; i++)
-	{
-		std::cout << "sqrt(" << i << ") = " << MySqrt(i) << std::endl;
-	}
+	
 }
