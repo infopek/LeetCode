@@ -11,7 +11,7 @@
 #include <numeric>
 #include <algorithm>
 
-/* Node definition */
+/* Node definition. */
 class Node
 {
 public:
@@ -25,7 +25,7 @@ public:
 		: val(_val), children(_children) {}
 };
 
-/* Singly-linked list node */
+/* Singly-linked list node definition. */
 struct ListNode
 {
 	int val;
@@ -52,6 +52,14 @@ struct TreeNode
 		: val(x), left(nullptr), right(nullptr) {}
 	TreeNode(int x, TreeNode* left, TreeNode* right)
 		: val(x), left(left), right(right) {}
+};
+
+/* Trie node definition. */
+struct TrieNode
+{
+	TrieNode* next[26];
+	int idx = -1;
+	std::vector<int> indices;
 };
 
 /* Helper method */
@@ -505,7 +513,8 @@ std::vector<int> FindOriginalArray(std::vector<int>& changed)
 	return original;
 }
 
-int ScoreMemo(std::vector<std::vector<int>>& dp, std::vector<int>& nums, std::vector<int>& multipliers, int mSize, int left, int right, int depth)
+int ScoreMemo(std::vector<std::vector<int>>& dp, std::vector<int>& nums, std::vector<int>& multipliers, int mSize,
+	int left, int right, int depth)
 {
 	if (depth == mSize)
 		return 0;
@@ -529,7 +538,79 @@ int MaximumScore(std::vector<int>& nums, std::vector<int>& multipliers)
 	return ScoreMemo(dp, nums, multipliers, mSize, 0, nSize - 1, 0);
 }
 
-/* 17 SEPT, 2022:  */
+class PaliPairs
+{
+public:
+	/* 17 SEPT, 2022: PALINDROME PAIRS */
+	std::vector<std::vector<int>> PalindromePairs(const std::vector<std::string>& words)
+	{
+		const int numWords = words.size();
+		for (int i = 0; i < numWords; i++)
+			Add(words[i], i);
+
+		std::vector<std::vector<int>> indices;
+		for (int i = 0; i < numWords; i++)
+		{
+			const std::string str = words[i];
+			const int length = str.length();
+
+			TrieNode* node = &m_Root;
+			for (int j = 0; j < length; j++)
+			{
+				if (!node)
+					break;
+				else
+				{
+					if (node->idx > -1 && node->idx != i && IsPalindrome(str, j, length - 1))
+						indices.push_back({ i, node->idx });
+
+					node = node->next[str[j] - 'a'];
+				}
+			}
+			if (!node)
+				continue;
+
+			for (int j = 0; j < node->indices.size(); j++)
+				if (i != j)
+					indices.push_back({ i, j });
+		}
+
+		return indices;
+	}
+
+private:
+	TrieNode m_Root;
+
+	bool IsPalindrome(const std::string& string, int left, int right)
+	{
+		while (left < right && string[left] == string[right])
+		{
+			left++;
+			right--;
+		}
+
+		return left >= right;;
+	}
+
+	void Add(const std::string& str, const int i)
+	{
+		const int length = str.length();
+		TrieNode* node = &m_Root;
+		for (int r = length - 1; r >= 0; r--)
+		{
+			if (IsPalindrome(str, 0, r))
+				node->indices.push_back(i);
+
+			int ch = str[r] - 'a';
+			if (!node->next[ch])
+				node->next[ch] = new TrieNode();
+
+			node = node->next[ch];
+		}
+		node->idx = i;
+		node->indices.push_back(i);
+	}
+}
 
 /* 19 SEPT, 2022:  */
 
@@ -551,7 +632,7 @@ int MaximumScore(std::vector<int>& nums, std::vector<int>& multipliers)
 
 int main()
 {
-	std::vector<int> nums = { -5, -3, -3, -2, 7, 1 };
-	std::vector<int> multipliers = { -10, -5, 3, 4, 6 };
-	std::cout << MaximumScore(nums, multipliers);
+	std::vector<std::string> words = { "abcd", "dcba", "lls", "s", "sssll" };
+	std::vector<std::vector<int>> palindromePairs = PalindromePairs(words);
+
 }
