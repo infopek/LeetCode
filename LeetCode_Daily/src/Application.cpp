@@ -610,6 +610,30 @@ private:
 		node->idx = i;
 		node->indices.push_back(i);
 	}
+};
+
+/* 18 SEPT, 2022: TRAPPING RAIN WATER */
+int Trap(const std::vector<int>& heights)
+{
+	const int size = heights.size();
+
+	int trapped = 0;
+	std::stack<int> indices;	// decreasing monotonic stack
+	for (int i = 0; i < size; i++)
+	{
+		while (!indices.empty() && heights[i] > heights[indices.top()])
+		{
+			int currTop = indices.top();
+			indices.pop();
+			if (!indices.empty())
+				trapped += (i - indices.top() - 1) * (std::min(heights[indices.top()], heights[i]) - heights[currTop]);
+
+		}
+
+		indices.push(i);
+	}
+
+	return trapped;
 }
 
 /* 19 SEPT, 2022:  */
@@ -632,7 +656,5 @@ private:
 
 int main()
 {
-	std::vector<std::string> words = { "abcd", "dcba", "lls", "s", "sssll" };
-	std::vector<std::vector<int>> palindromePairs = PalindromePairs(words);
 
 }
