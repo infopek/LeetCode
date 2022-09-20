@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <vector>
 #include <unordered_map>
@@ -636,9 +637,60 @@ int Trap(const std::vector<int>& heights)
 	return trapped;
 }
 
-/* 19 SEPT, 2022:  */
+/* 19 SEPT, 2022: FIND DUPLICATE FILE IN SYSTEM */
+std::vector<std::vector<std::string>> FindDuplicate(const std::vector<std::string>& paths) 
+{
+	std::unordered_map<std::string, std::vector<std::string>> allFiles;
+	std::vector<std::vector<std::string>> duplicates;
 
-/* 20 SEPT, 2022:  */
+	for (const auto& path : paths)
+	{
+		std::stringstream ss(path);
+		std::string str, dir, filename, content;
+		ss >> dir;
+		while (ss >> str)
+		{
+			auto it = str.find('(');
+			filename = str.substr(0, it);
+			content = str.substr(it);
+			allFiles[content].push_back(dir + '/' + filename);
+		}
+	}
+
+	for (const auto& [content, files] : allFiles)
+	{
+		const int numFiles = files.size();
+		if (numFiles > 1)
+			duplicates.push_back(files);
+	}
+
+	return duplicates;
+}
+
+/* 20 SEPT, 2022: MAXIMUM LENGTH OF REPEATED SUBARRAY */
+int FindLength(const std::vector<int>& nums1, const std::vector<int>& nums2)
+{
+	const int size1 = nums1.size();
+	const int size2 = nums2.size();
+	std::vector<std::vector<int>> dp(size1 + 1, std::vector<int>(size2 + 1, 0));
+
+	int maxLength = 0;
+	for (int i = 1; i <= size1; i++)
+	{
+		for (int j = 1; j <= size2; j++)
+		{
+			if (nums1[i - 1] == nums2[j - 1])
+			{
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+				maxLength = std::max(maxLength, dp[i][j]);
+			}
+			else
+				dp[i][j] = 0;
+		}
+	}
+
+	return maxLength;
+}
 
 /* 21 SEPT, 2022:  */
 
@@ -656,5 +708,7 @@ int Trap(const std::vector<int>& heights)
 
 int main()
 {
-
+	std::vector<int> nums1 = { 1, 2, 3, 2, 1 };
+	std::vector<int> nums2 = { 3, 2, 1, 4, 7 };
+	std::cout << FindLength(nums1, nums2);
 }
