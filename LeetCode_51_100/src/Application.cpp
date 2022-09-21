@@ -878,6 +878,12 @@ std::string SimplifyPath(std::string& path)
 	return canonical;
 }
 
+/* PROBLEM 72: EDIT DISTANCE */
+int MinDistance(std::string& orig, const std::string& target)
+{
+
+}
+
 int main()
 {
 	

@@ -692,7 +692,39 @@ int FindLength(const std::vector<int>& nums1, const std::vector<int>& nums2)
 	return maxLength;
 }
 
-/* 21 SEPT, 2022:  */
+/* 21 SEPT, 2022: SUM OF EVEN NUMBERS AFTER QUERIES */
+std::vector<int> SumEvenAfterQueries(std::vector<int>& nums, std::vector<std::vector<int>>& queries)
+{
+	const int size = nums.size();
+	const int numQueries = queries.size();
+	std::vector<int> result(numQueries);
+	int rIdx = 0;
+
+	// 0th even sum
+	int currSum = 0;
+	for (const int num : nums)
+	{
+		if (num % 2 == 0)
+			currSum += num;
+	}
+
+	// Queries
+	for (int i = 0; i < numQueries; ++i)
+	{
+		int val = queries[i][0];
+		int idx = queries[i][1];
+
+		currSum -= (nums[idx] % 2 == 0) ? nums[idx] : 0;
+		currSum += ((nums[idx] + val) % 2 == 0) ? (nums[idx] + val) : 0;
+
+		result[rIdx] = currSum;
+		rIdx++;
+
+		nums[idx] += val;
+	}
+
+	return result;
+}
 
 /* 22 SEPT, 2022:  */
 
