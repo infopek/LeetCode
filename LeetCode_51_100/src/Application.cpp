@@ -879,9 +879,30 @@ std::string SimplifyPath(std::string& path)
 }
 
 /* PROBLEM 72: EDIT DISTANCE */
-int MinDistance(std::string& orig, const std::string& target)
+int MinDistance(const std::string& orig, const std::string& target)
 {
+	const int oLength = orig.length();
+	const int tLength = target.length();
+	std::vector<std::vector<int>> dp(oLength + 1, std::vector<int>(tLength + 1, 0));
 
+	// Base case: distance to empty string
+	for (int i = 1; i <= oLength; i++)
+		dp[i][0] = i;
+	for (int j = 1; j <= tLength; j++)
+		dp[0][j] = j;
+
+	for (int i = 1; i <= oLength; i++)
+	{
+		for (int j = 1; j <= tLength; j++)
+		{
+			if (orig[i - 1] == target[j - 1])
+				dp[i][j] = dp[i - 1][j - 1];
+			else
+				dp[i][j] = std::min({ dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] }) + 1;
+		}
+	}
+
+	return dp[oLength][tLength];
 }
 
 int main()
