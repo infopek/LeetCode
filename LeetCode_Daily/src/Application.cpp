@@ -298,7 +298,7 @@ std::vector<int> InorderTraversal(TreeNode* root)
 }
 
 /* 9 SEPT, 2022: THE NUMBER OF WEAK CHARACTERS IN THE GAME */
-int NumberOfWeakCharacters(std::vector<std::vector<int>>& properties) 
+int NumberOfWeakCharacters(std::vector<std::vector<int>>& properties)
 {
 	const int size = properties.size();
 	auto compare = [](const std::vector<int>& lhs, const std::vector<int>& rhs)
@@ -422,7 +422,7 @@ bool ValidUtf8(const std::vector<int>& data)
 		return ((data[0] & 0b10000000) != 0b10000000);
 	else if (bytes > 4)
 		return false;
-	
+
 	int remaining = 0;
 	for (int i = 0; i < bytes; i++)
 	{
@@ -453,7 +453,7 @@ void PalindromeSearchDFS(TreeNode* node, int& result, int oddFreq)
 {
 	if (!node)
 		return;
-	
+
 	oddFreq ^= (1 << node->val);
 	if (!node->left && !node->right)
 		if ((oddFreq & (oddFreq - 1)) == 0)
@@ -535,7 +535,7 @@ int MaximumScore(std::vector<int>& nums, std::vector<int>& multipliers)
 	const int nSize = nums.size();
 	const int mSize = multipliers.size();
 	std::vector<std::vector<int>> dp(mSize + 1, std::vector<int>(mSize + 1, INT_MIN));
-	
+
 	return ScoreMemo(dp, nums, multipliers, mSize, 0, nSize - 1, 0);
 }
 
@@ -638,7 +638,7 @@ int Trap(const std::vector<int>& heights)
 }
 
 /* 19 SEPT, 2022: FIND DUPLICATE FILE IN SYSTEM */
-std::vector<std::vector<std::string>> FindDuplicate(const std::vector<std::string>& paths) 
+std::vector<std::vector<std::string>> FindDuplicate(const std::vector<std::string>& paths)
 {
 	std::unordered_map<std::string, std::vector<std::string>> allFiles;
 	std::vector<std::vector<std::string>> duplicates;
@@ -726,7 +726,26 @@ std::vector<int> SumEvenAfterQueries(std::vector<int>& nums, std::vector<std::ve
 	return result;
 }
 
-/* 22 SEPT, 2022:  */
+/* 22 SEPT, 2022: REVERSE WORDS IN A STRING III */
+std::string ReverseWords(std::string& str)
+{
+	const int length = str.length();
+	for (int i = 0; i < length; i++)
+	{
+		if (str[i] != ' ')
+		{
+			int j = i;
+			while (j < length && str[j] != ' ')
+				j++;
+
+			std::reverse(str.begin() + i, str.begin() + j);
+			i = j - 1;
+		}
+	}
+
+	return str;
+}
+
 
 /* 23 SEPT, 2022:  */
 
@@ -740,7 +759,5 @@ std::vector<int> SumEvenAfterQueries(std::vector<int>& nums, std::vector<std::ve
 
 int main()
 {
-	std::vector<int> nums1 = { 1, 2, 3, 2, 1 };
-	std::vector<int> nums2 = { 3, 2, 1, 4, 7 };
-	std::cout << FindLength(nums1, nums2);
+
 }
