@@ -905,6 +905,37 @@ int MinDistance(const std::string& orig, const std::string& target)
 	return dp[oLength][tLength];
 }
 
+void FillZero(std::vector<std::vector<int>>& matrix, const std::pair<int, int>& loc)
+{
+	int row = loc.first;
+	int col = loc.second;
+
+	for (int i = 0; i < matrix.size(); i++)
+		matrix[i][col] = 0;
+	for (int j = 0; j < matrix[0].size(); j++)
+		matrix[row][j] = 0;
+}
+
+/* PROBLEM 73: SET MATRIX ZEROES */
+void SetZeroes(std::vector<std::vector<int>>& matrix)
+{
+	const int m = matrix.size();
+	const int n = matrix[0].size();
+
+	// Find zero locations
+	std::vector<std::pair<int, int>> zeroCoords;
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (matrix[i][j] == 0)
+				zeroCoords.emplace_back(i, j);
+		}
+	}
+	for (const auto& loc : zeroCoords)
+		FillZero(matrix, loc);
+}
+
 int main()
 {
 	

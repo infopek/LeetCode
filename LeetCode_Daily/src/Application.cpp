@@ -746,8 +746,24 @@ std::string ReverseWords(std::string& str)
 	return str;
 }
 
+/* 23 SEPT, 2022: CONCATENATION OF CONSECUTIVE BINARY NUMBERS */
+int ConcatenatedBinary(const int num)
+{
+	const int M = 1e9 + 7;
 
-/* 23 SEPT, 2022:  */
+	long result = 0;
+	for (int i = 1; i <= num; i++)
+	{
+		// Count length of current binary
+		int length = 0;
+		for (int j = i; j != 0; j >>= 1)
+			length++;
+
+		result = ((result << length) % M + i) % M;
+	}
+
+	return result;
+}
 
 /* 24 SEPT, 2022:  */
 
@@ -756,6 +772,22 @@ std::string ReverseWords(std::string& str)
 /* 26 SEPT, 2022:  */
 
 /* 27 SEPT, 2022:  */
+
+/* 28 SEPT, 2022:  */
+
+/* 29 SEPT, 2022:  */
+
+/* 30 SEPT, 2022:  */
+
+/* 1 OCT, 2022:  */
+
+/* 2 OCT, 2022:  */
+
+/* 3 OCT, 2022:  */
+
+/* 4 OCT, 2022:  */
+
+/* 5 OCT, 2022:  */
 
 int main()
 {
