@@ -765,7 +765,29 @@ int ConcatenatedBinary(const int num)
 	return result;
 }
 
-/* 24 SEPT, 2022:  */
+void PreorderPathSum(std::vector<std::vector<int>>& paths, std::vector<int>& path, TreeNode* node, const int target)
+{
+	if (!node)
+		return;
+
+	path.push_back(node->val);
+	if (!node->left && !node->right && (target - node->val) == 0)	// leaf and path sum is equal to target
+		paths.push_back(path);
+
+	PreorderPathSum(paths, path, node->left, target - node->val);
+	PreorderPathSum(paths, path, node->right, target - node->val);
+	path.pop_back();
+}
+
+/* 24 SEPT, 2022: PATH SUM II */
+std::vector<std::vector<int>> PathSum(TreeNode* root, const int targetSum)
+{
+	std::vector<std::vector<int>> paths;
+	std::vector<int> path;
+	PreorderPathSum(paths, path, root, targetSum);
+
+	return paths;
+}
 
 /* 25 SEPT, 2022:  */
 
@@ -791,5 +813,19 @@ int ConcatenatedBinary(const int num)
 
 int main()
 {
+	TreeNode* root = new TreeNode(5);
+	root->left = new TreeNode(4);
+	root->left->left = new TreeNode(11);
+	root->left->left->left = new TreeNode(7);
+	root->left->left->right = new TreeNode(2);
+
+	root->right = new TreeNode(8);
+	root->right->left = new TreeNode(13);
+	root->right->right = new TreeNode(4);
+	root->right->right->left = new TreeNode(5);
+	root->right->right->right = new TreeNode(1);
+	root->left->left->right = new TreeNode(2);
+
+	std::vector<std::vector<int>> paths = PathSum(root, 22);
 
 }
