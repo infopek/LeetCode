@@ -789,7 +789,92 @@ std::vector<std::vector<int>> PathSum(TreeNode* root, const int targetSum)
 	return paths;
 }
 
-/* 25 SEPT, 2022:  */
+/* 25 SEPT, 2022: DESIGN CIRCULAR QUEUE */
+class CircularQueue
+{
+public:
+	CircularQueue(const int k)
+	{
+		m_Capacity = k;
+
+		m_Front = -1;
+		m_Rear = -1;
+
+		m_Buffer = new int[k];
+	}
+
+	~CircularQueue()
+	{
+		delete[] m_Buffer;
+	}
+
+	bool EnQueue(const int value)
+	{
+		if (!IsFull())
+		{
+			// First element
+			if (m_Front == -1)
+				m_Front = 0;
+
+			m_Rear = (m_Rear + 1) % m_Capacity;
+			m_Buffer[m_Rear] = value;
+			return true;
+		}
+		return false;
+	}
+
+	bool DeQueue()
+	{
+		if (!IsEmpty())
+		{
+			// Last element
+			if (m_Front == m_Rear)
+			{
+				m_Front = -1;
+				m_Rear = -1;
+			}
+			else
+				m_Front = (m_Front + 1) % m_Capacity;
+
+			return true;
+		}
+		return false;
+	}
+
+	int Front() const
+	{
+		if (!IsEmpty())
+			return m_Buffer[m_Front];
+		return -1;
+	}
+
+	int Rear() const
+	{
+		if (!IsEmpty())
+			return m_Buffer[m_Rear];
+		return -1;
+	}
+
+	bool IsEmpty() const
+	{
+		return m_Front == -1;
+	}
+
+	bool IsFull() const
+	{
+		if (m_Front == 0 && m_Rear == m_Capacity - 1 || m_Front == m_Rear + 1)
+			return true;
+		return false;
+	}
+
+private:
+	size_t m_Capacity;
+
+	int m_Front;
+	int m_Rear;
+
+	int* m_Buffer;
+};
 
 /* 26 SEPT, 2022:  */
 
@@ -813,19 +898,5 @@ std::vector<std::vector<int>> PathSum(TreeNode* root, const int targetSum)
 
 int main()
 {
-	TreeNode* root = new TreeNode(5);
-	root->left = new TreeNode(4);
-	root->left->left = new TreeNode(11);
-	root->left->left->left = new TreeNode(7);
-	root->left->left->right = new TreeNode(2);
-
-	root->right = new TreeNode(8);
-	root->right->left = new TreeNode(13);
-	root->right->right = new TreeNode(4);
-	root->right->right->left = new TreeNode(5);
-	root->right->right->right = new TreeNode(1);
-	root->left->left->right = new TreeNode(2);
-
-	std::vector<std::vector<int>> paths = PathSum(root, 22);
 
 }
