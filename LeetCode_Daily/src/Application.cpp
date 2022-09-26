@@ -876,7 +876,34 @@ private:
 	int* m_Buffer;
 };
 
-/* 26 SEPT, 2022:  */
+int FindEq(int uf[], const int x)
+{
+	if (uf[x] == x)
+		return x;
+	
+	uf[x] = FindEq(uf, uf[x]);
+	return uf[x];
+}
+
+/* 26 SEPT, 2022: SATISFIABILITY OF EQUALITY EQUATIONS */
+bool EquationsPossible(const std::vector<std::string>& equations) 
+{
+	constexpr static int numLetters = 26;
+	int uf[numLetters];
+
+	for (int i = 0; i < numLetters; i++)
+		uf[i] = i;
+
+	for (const auto& eq : equations)
+		if (eq[1] == '=')
+			uf[FindEq(uf, eq[0] - 'a')] = FindEq(uf, eq[3] - 'a');
+
+	for (const auto& eq : equations)
+		if (eq[1] == '!' && FindEq(uf, eq[0] - 'a') == FindEq(uf, eq[3] - 'a'))
+			return false;
+
+	return true;
+}
 
 /* 27 SEPT, 2022:  */
 
