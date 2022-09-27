@@ -905,7 +905,42 @@ bool EquationsPossible(const std::vector<std::string>& equations)
 	return true;
 }
 
-/* 27 SEPT, 2022:  */
+/* 27 SEPT, 2022: PUSH DOMINOES */
+std::string PushDominoes(std::string& dominoes)
+{
+	const int size = dominoes.size();
+	int left = 0;
+	for (int right = 0; right < size; right++)
+	{
+		if (dominoes[right] == '.')
+			continue;
+		else if ((dominoes[left] == dominoes[right]) || (dominoes[left] == '.' && dominoes[right] == 'L'))
+			for (int i = left; i < right; i++)
+				dominoes[i] = dominoes[right];
+		else if (dominoes[left] == 'L' && dominoes[right] == 'R')
+		{
+			// Nothing happens
+		}
+		else if (dominoes[left] == 'R' && dominoes[right] == 'L')
+		{
+			// Meet in middle
+			int mid = (right - left - 1) / 2;
+			for (int i = 1; i <= mid; i++)
+			{
+				dominoes[right - i] = 'L';
+				dominoes[left + i] = 'R';
+			}
+		}
+		
+		left = right;
+	}
+
+	if (dominoes[left] == 'R')
+		for (int i = left; i < size; i++)
+			dominoes[i] = 'R';
+
+	return dominoes;
+}
 
 /* 28 SEPT, 2022:  */
 
