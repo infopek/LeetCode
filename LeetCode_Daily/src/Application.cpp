@@ -942,7 +942,65 @@ std::string PushDominoes(std::string& dominoes)
 	return dominoes;
 }
 
-/* 28 SEPT, 2022:  */
+/* 28 SEPT, 2022: REMOVE NTH NODE FROM END OF LIST */
+ListNode* removeNthFromEnd(ListNode* head, const int n)
+{
+	ListNode* slow = head;
+	ListNode* fast = head;
+
+	int center = 1;
+	while (fast && fast->next)
+	{
+		fast = fast->next->next;
+		slow = slow->next;
+
+		center++;
+	}
+
+	// Handle special cases
+	int size;
+	if (!head->next)				// one node in list				
+		return nullptr;
+	else if (slow && !slow->next)	// two nodes in list
+	{
+		if (n == 1)	// remove last nodes
+		{
+			head->next = nullptr;
+		}
+		else if (n == 2)	// remove head
+		{
+			ListNode* temp = head;
+			head = head->next;
+			delete temp;
+		}
+		return head;
+	}
+	else
+		size = fast ? (2 * center - 1) : (2 * center - 2);
+
+	ListNode* prev = nullptr;
+	ListNode* curr = head;
+	int index = 1;
+	int target = size - n + 1;
+	while (curr && index < target)
+	{
+		prev = curr;
+		curr = curr->next;
+		index++;
+	}
+
+	if (n == size)		// remove head        
+		head = head->next;
+	else if (n == 1)	// remove last node      
+		prev->next = nullptr;
+	else        		// remove from somewhere in the middle
+	{
+		prev->next = curr->next;
+		curr = nullptr;
+	}
+
+	return head;
+}
 
 /* 29 SEPT, 2022:  */
 
