@@ -943,7 +943,7 @@ std::string PushDominoes(std::string& dominoes)
 }
 
 /* 28 SEPT, 2022: REMOVE NTH NODE FROM END OF LIST */
-ListNode* removeNthFromEnd(ListNode* head, const int n)
+ListNode* RemoveNthFromEnd(ListNode* head, const int n)
 {
 	ListNode* slow = head;
 	ListNode* fast = head;
@@ -1002,7 +1002,34 @@ ListNode* removeNthFromEnd(ListNode* head, const int n)
 	return head;
 }
 
-/* 29 SEPT, 2022:  */
+/* 29 SEPT, 2022: FIND K CLOSEST ELEMENTS */
+std::vector<int> FindClosestElements(const std::vector<int>& arr, int k, int x) 
+{
+	auto closer = [x](const int lhs, const int rhs)
+	{
+		if (std::abs(lhs - x) == std::abs(rhs - x))
+			return lhs > rhs;
+		else
+			return std::abs(lhs - x) > std::abs(rhs - x);
+	};
+	std::priority_queue<int, std::vector<int>, decltype(closer)> pq(closer);
+	std::vector<int> result(k);
+
+	for (int num : arr)
+		pq.push(num);
+
+	int i = 0;
+	while (!pq.empty() && k > 0)
+	{
+		result[i++] = pq.top();
+
+		pq.pop();
+		k--;
+	}
+
+	std::sort(result.begin(), result.end());
+	return result;
+}
 
 /* 30 SEPT, 2022:  */
 
@@ -1018,5 +1045,9 @@ ListNode* removeNthFromEnd(ListNode* head, const int n)
 
 int main()
 {
+	std::vector<int> arr = { 2, 6, 8, 9, 14, 17, 23, 36, 57, 433, 575 };
+	int k = 5;
+	int x = 20;
 
+	std::vector<int> result = FindClosestElements(arr, k, x);
 }
