@@ -12,7 +12,7 @@
 #include <numeric>
 #include <algorithm>
 
-/* Node definition. */
+/* Node definition */
 class Node
 {
 public:
@@ -26,7 +26,7 @@ public:
 		: val(_val), children(_children) {}
 };
 
-/* Singly-linked list node definition. */
+/* Singly-linked list node definition */
 struct ListNode
 {
 	int val;
@@ -40,7 +40,7 @@ struct ListNode
 		: val(x), next(next) {}
 };
 
-/* Binary tree node definition. */
+/* Binary tree node definition */
 struct TreeNode
 {
 	int val;
@@ -55,13 +55,15 @@ struct TreeNode
 		: val(x), left(left), right(right) {}
 };
 
-/* Trie node definition. */
+/* Trie node definition */
 struct TrieNode
 {
 	TrieNode* next[26];
 	int idx = -1;
 	std::vector<int> indices;
 };
+
+
 
 /* Helper method */
 void DFSCount(TreeNode* node, int& goodNodes, int prevPathMax, int pathMax)
@@ -880,13 +882,13 @@ int FindEq(int uf[], const int x)
 {
 	if (uf[x] == x)
 		return x;
-	
+
 	uf[x] = FindEq(uf, uf[x]);
 	return uf[x];
 }
 
 /* 26 SEPT, 2022: SATISFIABILITY OF EQUALITY EQUATIONS */
-bool EquationsPossible(const std::vector<std::string>& equations) 
+bool EquationsPossible(const std::vector<std::string>& equations)
 {
 	constexpr static int numLetters = 26;
 	int uf[numLetters];
@@ -931,7 +933,7 @@ std::string PushDominoes(std::string& dominoes)
 				dominoes[left + i] = 'R';
 			}
 		}
-		
+
 		left = right;
 	}
 
@@ -1003,7 +1005,7 @@ ListNode* RemoveNthFromEnd(ListNode* head, const int n)
 }
 
 /* 29 SEPT, 2022: FIND K CLOSEST ELEMENTS */
-std::vector<int> FindClosestElements(const std::vector<int>& arr, int k, int x) 
+std::vector<int> FindClosestElements(const std::vector<int>& arr, int k, int x)
 {
 	auto closer = [x](const int lhs, const int rhs)
 	{
@@ -1031,7 +1033,76 @@ std::vector<int> FindClosestElements(const std::vector<int>& arr, int k, int x)
 	return result;
 }
 
-/* 30 SEPT, 2022:  */
+/* 30 SEPT, 2022: THE SKYLINE PROBLEM */
+std::vector<std::vector<int>> GetSkyline(const std::vector<std::vector<int>>& buildings)
+{
+	std::vector<std::vector<int>> result;
+	std::priority_queue<std::pair<int, int>> pq;
+
+	int i = 1;
+	int curr = buildings[0][2];
+	int start = buildings[0][0];
+	int end = buildings[0][1];
+	while (i < buildings.size()) 
+	{
+		if (end < buildings[i][0]) 
+		{
+			result.push_back({ start, curr });
+			while (!pq.empty() && pq.top().second <= end) 
+				pq.pop();
+			if (!pq.empty()) 
+			{
+				start = end;
+				curr = pq.top().first;
+				end = pq.top().second;
+				pq.pop();
+			}
+			else 
+			{
+				result.push_back({ end,0 });
+				start = buildings[i][0];
+				end = buildings[i][1];
+				curr = buildings[i][2];
+				i++;
+			}
+		}
+		else 
+		{
+			if (buildings[i][2] == curr) 
+				end = std::max(end, buildings[i][1]);
+			else if (buildings[i][2] > curr) 
+			{
+				if (start != buildings[i][0])
+					result.push_back({ start, curr });
+				pq.push({ curr,end });
+				start = buildings[i][0];
+				curr = buildings[i][2];
+				end = buildings[i][1];
+			}
+			else 
+				pq.push({ buildings[i][2],buildings[i][1] });
+
+			i++;
+		}
+	}
+	while (!pq.empty()) 
+	{
+		while (!pq.empty() && pq.top().second <= end) 
+			pq.pop();
+		if (!pq.empty()) 
+		{
+			result.push_back({ start, curr });
+			start = end;
+			curr = pq.top().first;
+			end = pq.top().second;
+			pq.pop();
+		}
+	}
+	result.push_back({ start, curr });
+	result.push_back({ end, 0 });
+
+	return result;
+}
 
 /* 1 OCT, 2022:  */
 
@@ -1045,9 +1116,14 @@ std::vector<int> FindClosestElements(const std::vector<int>& arr, int k, int x)
 
 int main()
 {
-	std::vector<int> arr = { 2, 6, 8, 9, 14, 17, 23, 36, 57, 433, 575 };
-	int k = 5;
-	int x = 20;
+	std::vector<std::vector<int>> buildings =
+	{
+		{2,9,10},
+		{3,7,15},
+		{5,12,12},
+		{15,20,10},
+		{19,24,8}
+	};
 
-	std::vector<int> result = FindClosestElements(arr, k, x);
+	std::vector<std::vector<int>> result = GetSkyline(buildings);
 }
