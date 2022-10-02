@@ -12,7 +12,6 @@
 #include <numeric>
 #include <algorithm>
 
-/* Node definition */
 class Node
 {
 public:
@@ -26,7 +25,6 @@ public:
 		: val(_val), children(_children) {}
 };
 
-/* Singly-linked list node definition */
 struct ListNode
 {
 	int val;
@@ -40,7 +38,6 @@ struct ListNode
 		: val(x), next(next) {}
 };
 
-/* Binary tree node definition */
 struct TreeNode
 {
 	int val;
@@ -55,7 +52,6 @@ struct TreeNode
 		: val(x), left(left), right(right) {}
 };
 
-/* Trie node definition */
 struct TrieNode
 {
 	TrieNode* next[26];
@@ -63,9 +59,64 @@ struct TrieNode
 	std::vector<int> indices;
 };
 
+class FenwickTree
+{
+public:
+	FenwickTree(const std::vector<int>& nums) 
+	{
+		m_Length = nums.size() + 1;
 
+		std::ranges::copy(nums, std::back_inserter(m_Nums));
+		m_Tree = std::vector<int>(m_Length);
 
-/* Helper method */
+		for (int i = 1; i < m_Length; i++)
+			m_Tree[i] = m_Nums[i];
+
+		for (int child = 1; child < m_Length; child++)
+		{
+			int parent = child + FindRSB(child);
+			if (parent < m_Length)
+				m_Tree[parent] += m_Tree[child];
+		}
+	}
+
+	static int FindRSB(int idx) { return (idx & -idx); }
+
+	void Update(int idx, int val)
+	{
+		idx++;
+
+		int toAdd = val - m_Nums[idx];
+		m_Nums[idx] = val;
+
+		int i = idx;
+		while (i < m_Length)
+		{
+			m_Tree[i] += toAdd;
+			i += FindRSB(i);
+		}
+	}
+
+	int PrefixSum(int idx)
+	{
+		int result = 0;
+		while (idx != 0)
+		{
+			result += m_Tree[idx];
+			idx -= FindRSB(idx);
+		}
+
+		return result;
+	}
+	int SumRange(int left, int right) { return PrefixSum(right + 1) - PrefixSum(left); }
+
+private:
+	std::vector<int> m_Nums { 0 };
+	std::vector<int> m_Tree;
+
+	size_t m_Length;
+};
+
 void DFSCount(TreeNode* node, int& goodNodes, int prevPathMax, int pathMax)
 {
 	if (!node)
@@ -1104,9 +1155,37 @@ std::vector<std::vector<int>> GetSkyline(const std::vector<std::vector<int>>& bu
 	return result;
 }
 
-/* 1 OCT, 2022:  */
+/* 1 OCT, 2022: Decode Ways */
+int NumDecodings(const std::string& str)
+{
+	int length = str.length();
+}
 
-/* 2 OCT, 2022:  */
+/* 2 OCT, 2022: NUMBER OF DICE ROLLS WITH TARGET SUM */
+int NumRollsToTarget(int dice, int faces, int target) 
+{
+	const int mod = 1e9 + 7;
+	std::vector<int> dp1(target + 1);
+	std::vector<int> dp2(target + 1);
+	dp1[0] = 1;
+
+	for (int i = 1; i <= dice; i++)
+	{
+		int prev = dp1[0];
+		for (int j = 1; j <= target; j++)
+		{
+			dp2[j] = prev;
+			prev = (prev + dp1[j]) % mod;
+			if (j >= faces)
+				prev = (prev - dp1[j - faces]) % mod;
+		}
+
+		std::swap(dp1, dp2);
+		dp2[0] = 0;
+	}
+
+	return dp1[target];
+}
 
 /* 3 OCT, 2022:  */
 
@@ -1116,14 +1195,5 @@ std::vector<std::vector<int>> GetSkyline(const std::vector<std::vector<int>>& bu
 
 int main()
 {
-	std::vector<std::vector<int>> buildings =
-	{
-		{2,9,10},
-		{3,7,15},
-		{5,12,12},
-		{15,20,10},
-		{19,24,8}
-	};
-
-	std::vector<std::vector<int>> result = GetSkyline(buildings);
+	
 }
