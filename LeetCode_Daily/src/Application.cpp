@@ -1187,7 +1187,50 @@ int NumRollsToTarget(int dice, int faces, int target)
 	return dp1[target];
 }
 
-/* 3 OCT, 2022:  */
+/* 3 OCT, 2022: MINIMUM TIME TO MAKE ROPE COLORFUL */
+int MinCost(std::string& colors, const std::vector<int>& costs)
+{
+	const int numColors = colors.size();
+	int minTime = 0;
+	bool colorful = false;
+
+	// Brute-force
+	while (!colorful)
+	{
+		colorful = true;
+
+		// Check two consecutive colors, delete the one with less cost
+		for (int i = 0; i < numColors - 1; i++)
+		{
+			// Skip deleted colors
+			int j = i + 1;
+			while (j < numColors && colors[j] == '0')
+				j++;
+
+			if (j < numColors)
+			{
+				if (colors[i] == colors[j])
+				{
+					colorful = false;
+					if (costs[i] <= costs[j])
+					{
+						colors[i] = '0';
+						minTime += costs[i];
+					}
+					else
+					{
+						colors[j] = '0';
+						minTime += costs[j];
+					}
+				}
+			}
+
+			i = j - 1;
+		}
+	}
+
+	return minTime;
+}
 
 /* 4 OCT, 2022:  */
 
