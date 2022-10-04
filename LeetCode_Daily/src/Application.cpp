@@ -833,7 +833,7 @@ void PreorderPathSum(std::vector<std::vector<int>>& paths, std::vector<int>& pat
 }
 
 /* 24 SEPT, 2022: PATH SUM II */
-std::vector<std::vector<int>> PathSum(TreeNode* root, const int targetSum)
+std::vector<std::vector<int>> PathSum2(TreeNode* root, const int targetSum)
 {
 	std::vector<std::vector<int>> paths;
 	std::vector<int> path;
@@ -1232,9 +1232,43 @@ int MinCost(std::string& colors, const std::vector<int>& costs)
 	return minTime;
 }
 
-/* 4 OCT, 2022:  */
+void HasPathSumDFS(TreeNode* node, int target, bool& result)
+{
+	if (!node)
+		return;
+
+	if (!node->left && !node->right && (target - node->val) == 0)	// leaf
+		result = true;
+	
+	HasPathSumDFS(node->left, target - node->val, result);
+	HasPathSumDFS(node->right, target - node->val, result);
+}
+
+/* 4 OCT, 2022: PATH SUM */
+bool HasPathSum(TreeNode* root, int targetSum)
+{
+	bool result = false;
+	HasPathSumDFS(root, targetSum, result);
+	return result;
+}
 
 /* 5 OCT, 2022:  */
+
+/* 6 OCT, 2022:  */
+
+/* 7 OCT, 2022:  */
+
+/* 8 OCT, 2022:  */
+
+/* 9 OCT, 2022:  */
+
+/* 10 OCT, 2022:  */
+
+/* 11 OCT, 2022:  */
+
+/* 12 OCT, 2022:  */
+
+/* 13 OCT, 2022:  */
 
 int main()
 {
