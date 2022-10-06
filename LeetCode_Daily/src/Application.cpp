@@ -1273,7 +1273,29 @@ TreeNode* AddOneRow(TreeNode* root, int val, int depth)
 	return root;
 }
 
-/* 6 OCT, 2022:  */
+/* 6 OCT, 2022: TIME BASED KEY-VALUE STORE */
+class TimeMap
+{
+public:
+	TimeMap()
+	{
+
+	}
+
+	void Set(const std::string& key, const std::string& value, const int timestamp)
+	{
+		m_Map[key].insert({ timestamp, value });
+	}
+
+	std::string Get(const std::string& key, const int timestamp)
+	{
+		auto it = m_Map[key].upper_bound(timestamp);
+		return (it == m_Map[key].begin()) ? "" : std::prev(it)->second;
+	}
+
+private:
+	std::unordered_map<std::string, std::map<int, std::string>> m_Map;
+};
 
 /* 7 OCT, 2022:  */
 
