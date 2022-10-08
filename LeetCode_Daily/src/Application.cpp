@@ -1301,15 +1301,75 @@ private:
 class Calendar3
 {
 public:
-	Calendar3() {}
+	Calendar3()
+	{
+		m_Root = new Node();
+	}
 
 	int Book(const int start, const int end)
 	{
-
+		m_MaxValue = std::max(m_MaxValue, UpdateVal(m_Root, 0, LIMIT, start, end - 1));
+		return m_MaxValue;
 	}
 
 private:
+	struct Node
+	{
+		int val;
+		int lazy;
+		Node* left;
+		Node* right;
 
+		Node()
+			: val(0), lazy(0), left(nullptr), right(nullptr) {}
+	};
+
+	const int LIMIT = 1e9 + 1;
+
+	Node* m_Root;
+	int m_MaxValue = 0;
+
+	int UpdateVal(Node* node, int minRange, int maxRange, int low, int high)
+	{
+		if (!node->left)
+			node->left = new Node();
+		if (!node->right)
+			node->right = new Node();
+
+		if (node->lazy != 0)
+		{
+			node->val += node->lazy;
+			if (low != high)
+			{
+				node->left->lazy += node->lazy;
+				node->right->lazy += node->lazy;
+			}
+			node->lazy = 0;
+		}
+
+		if (maxRange < low || minRange > high)
+			return 0;
+		
+		if (minRange >= low && maxRange <= high)
+		{
+			node->val++;
+			if (low != high)
+			{
+				node->left->lazy++;
+				node->right->lazy++;
+			}
+
+			return node->val;
+		}
+
+		int mid = minRange + (maxRange - minRange) / 2;
+
+		UpdateVal(node->left, minRange, mid, low, high);
+		UpdateVal(node->right, mid + 1, maxRange, low, high);
+
+		node->val = std::max(node->left->val, node->right->val);
+		return node->val;
+	}
 };
 
 /* 8 OCT, 2022: 3SUM CLOSEST */
