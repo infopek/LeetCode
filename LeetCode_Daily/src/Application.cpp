@@ -1373,7 +1373,7 @@ private:
 };
 
 /* 8 OCT, 2022: 3SUM CLOSEST */
-int threeSumClosest(std::vector<int>& nums, const int target)
+int ThreeSumClosest(std::vector<int>& nums, const int target)
 {
 	const int size = nums.size();
 	int best = nums[0] + nums[1] + nums[2];
