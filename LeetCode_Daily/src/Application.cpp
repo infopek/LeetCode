@@ -1297,9 +1297,51 @@ private:
 	std::unordered_map<std::string, std::map<int, std::string>> m_Map;
 };
 
-/* 7 OCT, 2022:  */
+/* 7 OCT, 2022: MY CALENDAR III */
+class Calendar3
+{
+public:
+	Calendar3() {}
 
-/* 8 OCT, 2022:  */
+	int Book(const int start, const int end)
+	{
+
+	}
+
+private:
+
+};
+
+/* 8 OCT, 2022: 3SUM CLOSEST */
+int threeSumClosest(std::vector<int>& nums, const int target)
+{
+	const int size = nums.size();
+	int best = nums[0] + nums[1] + nums[2];
+	if (size == 3)
+		return best;
+
+	std::sort(nums.begin(), nums.end());
+	for (int i = 0; i < size - 2; i++)
+	{
+		int left = i + 1;
+		int right = size - 1;
+		while (left < right)
+		{
+			int sum = nums[i] + nums[left] + nums[right];
+			if (abs(target - sum) < abs(target - best))
+				best = sum;
+
+			if (sum == target)
+				return sum;
+			else if (sum < target)
+				left++;
+			else
+				right--;
+		}
+	}
+
+	return best;
+}
 
 /* 9 OCT, 2022:  */
 
