@@ -1403,7 +1403,32 @@ int ThreeSumClosest(std::vector<int>& nums, const int target)
 	return best;
 }
 
-/* 9 OCT, 2022:  */
+void FindTargetDFS(TreeNode* node, std::unordered_map<int, int>& map, const int k, bool& found)
+{
+	if (!node)
+		return;
+
+	int target = k - node->val;
+	if (map.find(target) != map.end())
+	{
+		found = true;
+		return;
+	}
+	else
+		map[node->val] = node->val;
+
+	FindTargetDFS(node->left, map, k, found);
+	FindTargetDFS(node->right, map, k, found);
+}
+
+/* 9 OCT, 2022: TWO SUM IV - INPUT IS A BST */
+bool FindTarget(TreeNode* root, const int k)
+{
+	bool result = false;
+	std::unordered_map<int, int> map;
+	FindTargetDFS(root, map, k, result);
+	return result;
+}
 
 /* 10 OCT, 2022:  */
 
