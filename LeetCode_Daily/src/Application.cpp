@@ -1430,7 +1430,25 @@ bool FindTarget(TreeNode* root, const int k)
 	return result;
 }
 
-/* 10 OCT, 2022:  */
+/* 10 OCT, 2022: BREAK A PALINDROME */
+std::string BreakPalindrome(std::string& palindrome)
+{
+	int length = palindrome.length();
+	if (length < 2)
+		return "";
+
+	for (int i = 0; i < length / 2; i++)
+	{
+		if (palindrome[i] > 'a')
+		{
+			palindrome[i] = 'a';
+			return palindrome;
+		}
+	}
+
+	palindrome[length - 1] = 'b';
+	return palindrome;
+}
 
 /* 11 OCT, 2022:  */
 
