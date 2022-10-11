@@ -1450,7 +1450,23 @@ std::string BreakPalindrome(std::string& palindrome)
 	return palindrome;
 }
 
-/* 11 OCT, 2022:  */
+/* 11 OCT, 2022: INCREASING TRIPLET SUBSEQUENCE */
+bool IncreasingTriplet(const std::vector<int>& nums)
+{
+	int first = INT_MAX;
+	int second = INT_MAX;
+	for (const auto n : nums)
+	{
+		if (n <= first)
+			first = n;
+		else if (n <= second)
+			second = n;
+		else
+			return true;
+	}
+
+	return false;
+}
 
 /* 12 OCT, 2022:  */
 
