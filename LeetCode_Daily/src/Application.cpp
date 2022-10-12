@@ -1159,6 +1159,7 @@ std::vector<std::vector<int>> GetSkyline(const std::vector<std::vector<int>>& bu
 int NumDecodings(const std::string& str)
 {
 	int length = str.length();
+	return length;
 }
 
 /* 2 OCT, 2022: NUMBER OF DICE ROLLS WITH TARGET SUM */
@@ -1468,11 +1469,48 @@ bool IncreasingTriplet(const std::vector<int>& nums)
 	return false;
 }
 
-/* 12 OCT, 2022:  */
+/* 12 OCT, 2022: LARGEST PERIMETER TRIANGLE */
+int LargestPerimeter(std::vector<int>& nums)
+{
+	std::sort(nums.rbegin(), nums.rend());
+	for (int i = 0; i < nums.size() - 2; i++)
+		if (nums[i] < nums[i + 1] + nums[i + 2])
+			return nums[i] + nums[i + 1] + nums[i + 2];
+
+	return 0;
+}
 
 /* 13 OCT, 2022:  */
 
+
+/* 14 OCT, 2022:  */
+
+
+/* 15 OCT, 2022:  */
+
+
+/* 16 OCT, 2022:  */
+
+
+/* 17 OCT, 2022:  */
+
+
+/* 18 OCT, 2022:  */
+
+
+/* 19 OCT, 2022:  */
+
+
+/* 20 OCT, 2022:  */
+
+
+/* 21 OCT, 2022:  */
+
+
+/* 22 OCT, 2022:  */
+
 int main()
 {
-	
+	std::vector<int> nums = { 4, 6, 2, 7, 23, 123 };
+	LargestPerimeter(nums);
 }
