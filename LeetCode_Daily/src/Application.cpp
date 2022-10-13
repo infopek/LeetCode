@@ -1480,8 +1480,21 @@ int LargestPerimeter(std::vector<int>& nums)
 	return 0;
 }
 
-/* 13 OCT, 2022:  */
-
+/* 13 OCT, 2022: DELETE NODE IN A LINKED LIST */
+void DeleteNode(ListNode* node)
+{
+	ListNode* prev = node;
+	ListNode* curr = node;
+	while (curr->next)
+	{
+		curr->val = curr->next->val;
+		
+		prev = curr;
+		curr = curr->next;
+	}
+	
+	prev->next = nullptr;
+}
 
 /* 14 OCT, 2022:  */
 
@@ -1511,6 +1524,5 @@ int LargestPerimeter(std::vector<int>& nums)
 
 int main()
 {
-	std::vector<int> nums = { 4, 6, 2, 7, 23, 123 };
-	LargestPerimeter(nums);
+	
 }
