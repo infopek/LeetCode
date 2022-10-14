@@ -1496,8 +1496,25 @@ void DeleteNode(ListNode* node)
 	prev->next = nullptr;
 }
 
-/* 14 OCT, 2022:  */
+/* 14 OCT, 2022: DELETE THE MIDDLE NODE OF A LINKED LIST */
+ListNode* DeleteMiddle(ListNode* head)
+{
+	if (head && !head->next)
+		return nullptr;
 
+	ListNode* prev = nullptr;
+	ListNode* slow = head;
+	ListNode* fast = head;
+	while (fast && fast->next)
+	{
+		prev = slow;
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	prev->next = slow->next;
+
+	return head;
+}
 
 /* 15 OCT, 2022:  */
 
@@ -1524,5 +1541,26 @@ void DeleteNode(ListNode* node)
 
 int main()
 {
-	
+	ListNode* h = new ListNode(5);
+
+	// Even
+	ListNode* head = new ListNode(1);
+	head->next = new ListNode(4);
+	head->next->next = new ListNode(7);
+	head->next->next->next = new ListNode(1);
+	head->next->next->next->next = new ListNode(2);
+	head->next->next->next->next->next = new ListNode(6);
+
+	// Odd
+	ListNode* head2 = new ListNode(1);
+	head2->next = new ListNode(4);
+	head2->next->next = new ListNode(7);
+	head2->next->next->next = new ListNode(1);
+	head2->next->next->next->next = new ListNode(2);
+	head2->next->next->next->next->next = new ListNode(6);
+	head2->next->next->next->next->next = new ListNode(8);
+
+	DeleteMiddle(h);
+	DeleteMiddle(head);
+	DeleteMiddle(head2);
 }
