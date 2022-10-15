@@ -1516,8 +1516,42 @@ ListNode* DeleteMiddle(ListNode* head)
 	return head;
 }
 
-/* 15 OCT, 2022:  */
+int CalcLength(const int length)
+{
+	if (length <= 1)		return length;
+	else if (length < 10)	return 2;
+	else if (length < 100)	return 3;
+	else					return 4;
+}
 
+/* 15 OCT, 2022: STRING COMPRESSION II */
+int GetLengthOfOptimalCompression(const std::string& str, const int k) 
+{
+	const int length = str.length();
+	std::vector<std::vector<long>> dp(length + 1, std::vector<long>(k + 1, INT_MAX));
+	dp[0][0] = 0;
+	for (int i = 1; i <= length; i++)
+	{
+		for (int j = 0; j <= k; j++)
+		{
+			if (j > 0)
+				dp[i][j] = dp[i - 1][j - 1];
+
+			int removed = 0;
+			int count = 0;
+			for (int p = i; p > 0; p--)
+			{
+				if (str[p - 1] == str[i - 1])
+					count++;
+				else if (++removed > j)
+					break;
+				dp[i][j] = std::min(dp[i][j], dp[p - 1][j - removed] + CalcLength(count));
+			}
+		}
+	}
+
+	return dp[length][k];
+}
 
 /* 16 OCT, 2022:  */
 
