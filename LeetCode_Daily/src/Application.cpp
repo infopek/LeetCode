@@ -1553,48 +1553,50 @@ int GetLengthOfOptimalCompression(const std::string& str, const int k)
 	return dp[length][k];
 }
 
-/* 16 OCT, 2022:  */
+/* 16 OCT, 2022: MINIMUM DIFFICULTY OF A JOB SCHEDULE */
+int MinDifficulty(const std::vector<int>& difficulty, const int days)
+{
+	const int size = difficulty.size();
+	if (days > size)
+		return -1;
 
+	std::vector<long> dp(size + 1, INT_MAX);
+	dp[size] = 0;
+	for (int d = 1; d <= days; d++)
+	{
+		for (int i = 0; i <= size - d; i++)
+		{
+			int currMax = 0;
+			dp[i] = INT_MAX;
+			for (int j = i; j <= size - d; j++)
+			{
+				currMax = std::max(currMax, difficulty[j]);
+				dp[i] = std::min(dp[i], dp[j + 1] + currMax);
+			}
+		}
+	}
+
+	return dp[0];
+}
 
 /* 17 OCT, 2022:  */
 
-
 /* 18 OCT, 2022:  */
-
 
 /* 19 OCT, 2022:  */
 
-
 /* 20 OCT, 2022:  */
 
-
 /* 21 OCT, 2022:  */
-
 
 /* 22 OCT, 2022:  */
 
 int main()
 {
-	ListNode* h = new ListNode(5);
-
-	// Even
-	ListNode* head = new ListNode(1);
-	head->next = new ListNode(4);
-	head->next->next = new ListNode(7);
-	head->next->next->next = new ListNode(1);
-	head->next->next->next->next = new ListNode(2);
-	head->next->next->next->next->next = new ListNode(6);
-
-	// Odd
-	ListNode* head2 = new ListNode(1);
-	head2->next = new ListNode(4);
-	head2->next->next = new ListNode(7);
-	head2->next->next->next = new ListNode(1);
-	head2->next->next->next->next = new ListNode(2);
-	head2->next->next->next->next->next = new ListNode(6);
-	head2->next->next->next->next->next = new ListNode(8);
-
-	DeleteMiddle(h);
-	DeleteMiddle(head);
-	DeleteMiddle(head2);
+	srand(time(0));
+	std::cout << "| ";
+	for (int i = 0; i < 20; i++)
+	{
+		std::cout << rand() % 20 << " | ";
+	}
 }
