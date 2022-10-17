@@ -592,10 +592,10 @@ int MaximumScore(std::vector<int>& nums, std::vector<int>& multipliers)
 	return ScoreMemo(dp, nums, multipliers, mSize, 0, nSize - 1, 0);
 }
 
+/* 17 SEPT, 2022: PALINDROME PAIRS */
 class PaliPairs
 {
 public:
-	/* 17 SEPT, 2022: PALINDROME PAIRS */
 	std::vector<std::vector<int>> PalindromePairs(const std::vector<std::string>& words)
 	{
 		const int numWords = words.size();
