@@ -1579,7 +1579,27 @@ int MinDifficulty(const std::vector<int>& difficulty, const int days)
 	return dp[0];
 }
 
-/* 17 OCT, 2022:  */
+/* 17 OCT, 2022: CHECK IF THE SENTENCE IS PANGRAM */
+bool CheckIfPangram(const std::string& sentence)
+{
+	static constexpr int s_NumLetters = 26;
+	const int length = sentence.length();
+	if (length < s_NumLetters)
+		return false;
+
+	std::vector<int> letters(s_NumLetters, 0);
+	int sum = 0;
+	for (const char l : sentence)
+	{
+		if (letters[l - 'a'] == 0)
+		{
+			letters[l - 'a']++;
+			sum++;
+		}
+	}
+
+	return sum == s_NumLetters;
+}
 
 /* 18 OCT, 2022:  */
 
