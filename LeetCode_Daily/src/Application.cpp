@@ -1601,7 +1601,36 @@ bool CheckIfPangram(const std::string& sentence)
 	return sum == s_NumLetters;
 }
 
-/* 18 OCT, 2022:  */
+/* 18 OCT, 2022: COUNT AND SAY */
+std::string CountAndSay(int n)
+{
+	std::string result = "1";
+	int iter = 1;
+	while (iter < n)
+	{
+		std::string tempResult = "";
+		const int length = result.length();
+		int idx = 0;
+		while (idx < length)
+		{
+			int digitCount = 1;
+			while (idx < length - 1 && result[idx] == result[idx + 1])
+			{
+				idx++;
+				digitCount++;
+			}
+
+			tempResult += std::to_string(digitCount);
+			tempResult += result[idx];
+			idx++;
+		}
+
+		result = tempResult;
+		iter++;
+	}
+
+	return result;
+}
 
 /* 19 OCT, 2022:  */
 
