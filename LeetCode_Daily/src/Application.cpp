@@ -1685,10 +1685,5 @@ std::vector<std::string> TopKFrequent(std::vector<std::string>& words, int k)
 
 int main()
 {
-	srand(time(0));
-	std::cout << "| ";
-	for (int i = 0; i < 20; i++)
-	{
-		std::cout << rand() % 20 << " | ";
-	}
+	
 }
