@@ -1632,7 +1632,50 @@ std::string CountAndSay(int n)
 	return result;
 }
 
-/* 19 OCT, 2022:  */
+/* 19 OCT, 2022: TOP K FREQUENT WORDS */
+std::vector<std::string> TopKFrequent(std::vector<std::string>& words, int k)
+{
+    // Store word frequency in a hash map
+    const int size = words.size();
+    std::unordered_map<std::string, int> wordFreq;
+    for (const auto& word : words)
+        wordFreq[word]++;
+
+    // Initialize priority queue
+    using FreqWordPair = std::pair<int, std::string>;
+    auto compare = [](const FreqWordPair& p1, const FreqWordPair& p2)
+    {
+        if (p1.first == p2.first)
+            return p1.second < p2.second;
+        return p1.first > p2.first;
+    };
+    std::priority_queue<FreqWordPair, std::vector<FreqWordPair>, decltype(compare)> pQueue(compare);
+
+    // Fill priority queue with k most common words
+    int qSize = 0;
+    for (const auto& [word, count] : wordFreq)
+    {
+        pQueue.push({ count, word });
+        qSize++;
+        if (qSize > k)
+        {
+            pQueue.pop();
+            qSize--;
+        }
+    }
+
+    // Fill result
+    std::vector<std::string> result(k);
+    k--;
+    while (!pQueue.empty())
+    {
+        result[k] = pQueue.top().second;
+        k--;
+        pQueue.pop();
+    }
+
+    return result;
+}
 
 /* 20 OCT, 2022:  */
 
