@@ -1677,7 +1677,27 @@ std::vector<std::string> TopKFrequent(std::vector<std::string>& words, int k)
     return result;
 }
 
-/* 20 OCT, 2022:  */
+/* 20 OCT, 2022: INTEGER TO ROMAN */
+std::string IntToRoman(int num)
+{
+	// Greedy algorithm
+	std::string symbols[] = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+	int values[] = { 1000, 900, 500, 400,  100,  90,   50,  40,   10,  9,    5,   4,    1 };
+
+	std::string result;
+	int index = 0;
+	while (num != 0)
+	{
+		while (values[index] <= num)
+		{
+			num -= values[index];
+			result += symbols[index];
+		}
+		index++;
+	}
+
+	return result;
+}
 
 /* 21 OCT, 2022:  */
 
