@@ -1699,7 +1699,21 @@ std::string IntToRoman(int num)
 	return result;
 }
 
-/* 21 OCT, 2022:  */
+/* 21 OCT, 2022: CONTAINS DUPLICATE II */
+bool ContainsNearbyDuplicate(const std::vector<int>& nums, const int k)
+{
+	std::unordered_map<int, int> hashMap;
+	for (int i = 0; i < nums.size(); i++)
+	{
+		if (hashMap.find(nums[i]) != hashMap.end())
+			if (abs(i - hashMap[nums[i]]) <= k)
+				return true;
+
+		hashMap[nums[i]] = i;
+	}
+
+	return false;
+}
 
 /* 22 OCT, 2022:  */
 
@@ -1717,5 +1731,7 @@ std::string IntToRoman(int num)
 
 int main()
 {
-	
+	const std::vector<int> nums = { 1, 2, 3, 1 };
+	const int k = 3;
+	std::cout << ContainsNearbyDuplicate(nums, k);
 }
